@@ -12,33 +12,34 @@ func TestAddTodo(t *testing.T) {
 		t.Errorf("db.Todos should be empty")
 	}
 
-	text := "Play music"
-	id := db.AddTodo(text, false)
+	text := "Do stuff"
+	completed := false
+	id := db.AddTodo(text, completed)
 	fmt.Println(id)
 
 	if len(db.Todos) != 1 {
 		t.Errorf("db.Todos should have one Todo")
 	}
 
-	// if id {
-	// 	t.Errorf("db.Todos should have one Todo")
-	// }
+	if db.Todos[0].Text != text {
+		t.Errorf("db.Todos[0] should not be completed")
+	}
 
-	// if db.Todos[0].Completed != todo.Completed {
-	// 	t.Errorf("db.Todos[0] should not be completed")
+	if db.Todos[0].Completed != completed {
+		t.Errorf("db.Todos[0] should not be completed")
+	}
+}
+
+func TestEditTodo(t *testing.T) {
+	db := CreateDB()
+	text := "Do stuff"
+	completed := false
+	id := db.AddTodo(text, completed)
+
+	// db.EditTodo()
+
+	// if len(db.Todos) != 0 {
+	// 	t.Errorf("db.Todos should be empty")
 	// }
 
 }
-
-// func TestEditTodo(t *testing.T) {
-// 	db := CreateDB()
-// 	todo1 := Todo{uuid.New(), "Play music", false}
-
-// 	db.AddTodo(todo1)
-// 	db.EditTodo()
-
-// 	// if len(db.Todos) != 0 {
-// 	// 	t.Errorf("db.Todos should be empty")
-// 	// }
-
-// }

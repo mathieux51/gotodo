@@ -1,6 +1,8 @@
 package model
 
 import (
+	"errors"
+
 	"github.com/google/uuid"
 )
 
@@ -32,10 +34,21 @@ func (db *DB) AddTodo(text string, completed bool) uuid.UUID {
 }
 
 // EditTodo ...
-// func (db *DB) EditTodo(id uuid.UUID, ⚠️) {
-// 	for _, v := range db.Todos {
-// 		if v.ID == id {
+func (db *DB) EditTodo(id uuid.UUID, newTodo Todo) error {
+	todo, err := db.findTodoByID(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
-// 		}
-// 	}
-// }
+// findTodoByID ...
+func (db *DB) findTodoByID(id uuid.UUID) (Todo, error) {
+	for _, v := range db.Todos {
+		if v.ID == id {
+			return v, nil
+		}
+	}
+	return nil, errors.New("Todo not found")
+	// cannot use nil as type Todo in return argument
+}
