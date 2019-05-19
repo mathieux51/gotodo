@@ -27,28 +27,21 @@ func CreateDB() *DB {
 }
 
 // AddTodo append a todo to the todos array
-func (db *DB) AddTodo(text string, completed bool) uuid.UUID {
+func (db *DB) AddTodo(text string, completed bool) Todo {
 	id := uuid.New()
-	db.Todos = append(db.Todos, Todo{id, text, completed})
-	return id
+	d := Todo{id, text, completed}
+	db.Todos = append(db.Todos, d)
+	return d
 }
 
-// EditTodo ...
-func (db *DB) EditTodo(id uuid.UUID, newTodo Todo) error {
-	todo, err := db.findTodoByID(id)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// findTodoByID ...
-func (db *DB) findTodoByID(id uuid.UUID) (Todo, error) {
-	for _, v := range db.Todos {
-		if v.ID == id {
-			return v, nil
+// UpdateTodo updates a todo text and completed fields given the id.
+func (db *DB) UpdateTodo(id uuid.UUID, todo Todo) error {
+	for _, t := range db.Todos {
+		if t.ID == id {
+			t = todo
+			t.ID = id
+			return nil
 		}
 	}
-	return nil, errors.New("Todo not found")
-	// cannot use nil as type Todo in return argument
+	return errors.New("Todo not found")
 }

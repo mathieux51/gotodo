@@ -9,7 +9,7 @@ import (
 func ExampleResponseRecorder() {
 	req := httptest.NewRequest("GET", "/hello", nil)
 	w := httptest.NewRecorder()
-	HelloHandler(w, req)
+	TodosHandler(w, req)
 	resp := w.Result()
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(resp.StatusCode)

@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -14,8 +13,7 @@ func TestAddTodo(t *testing.T) {
 
 	text := "Do stuff"
 	completed := false
-	id := db.AddTodo(text, completed)
-	fmt.Println(id)
+	db.AddTodo(text, completed)
 
 	if len(db.Todos) != 1 {
 		t.Errorf("db.Todos should have one Todo")
@@ -30,16 +28,9 @@ func TestAddTodo(t *testing.T) {
 	}
 }
 
-func TestEditTodo(t *testing.T) {
-	db := CreateDB()
-	text := "Do stuff"
-	completed := false
-	id := db.AddTodo(text, completed)
+// func TestEditTodo(t *testing.T) {
+// 	db := CreateDB()
+// 	text := "Do stuff"
+// 	completed := false
 
-	// db.EditTodo()
-
-	// if len(db.Todos) != 0 {
-	// 	t.Errorf("db.Todos should be empty")
-	// }
-
-}
+// }
