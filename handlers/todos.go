@@ -24,7 +24,18 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 
 		// Response
-		io.WriteString(w, "GET")
+		todos, err := model.GetTodos()
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		jsonTodos, err := json.Marshal(todos)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		w.Header().Set("content-type", "application/json")
+		w.Write(jsonTodos)
 
 	case http.MethodPost:
 
@@ -59,13 +70,13 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Response
-		output, err := json.Marshal(t)
+		jsonTodo, err := json.Marshal(t)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
 		}
 		w.Header().Set("content-type", "application/json")
-		w.Write(output)
+		w.Write(jsonTodo)
 
 	}
 
