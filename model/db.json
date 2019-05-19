@@ -1,9 +1,19 @@
 {
-  "todos": [
-    {
-      "id": "5ad42da3-2181-495d-91e3-8c5e69651c13",
-      "text": "Let's do it",
-      "completed": false
-    }
-  ]
+ "todos": [
+  {
+   "id": "5ad42da3-2181-495d-91e3-8c5e69651c13",
+   "text": "Let's do it",
+   "completed": false
+  },
+  {
+   "id": "5e430e0c-09f0-491e-8fab-2b037a531050",
+   "text": "Let's get Schwifty again",
+   "completed": false
+  },
+  {
+   "id": "be22d6e4-221f-4c5b-8c3d-5d7cf6ce6d17",
+   "text": "Let's get Schwifty again",
+   "completed": false
+  }
+ ]
 }

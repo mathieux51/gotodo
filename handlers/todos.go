@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
-	"github.com/mathieux51/mem-crud/model"
+	"github.com/mathieux51/gotodo/model"
 )
 
 // Todo ...
@@ -43,6 +43,7 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), 500)
 			return
 		}
+
 		// Generate uuid
 		id, err := uuid.NewRandom()
 		if err != nil {
@@ -51,7 +52,11 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		t.ID = id
 
-		// db.Todos.AddTodo()
+		// Save to db
+		if err = model.AddTodo(t); err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
 
 		// Response
 		output, err := json.Marshal(t)

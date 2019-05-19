@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/mathieux51/mem-crud/handlers"
+	"github.com/mathieux51/gotodo/handlers"
 )
 
 func main() {
