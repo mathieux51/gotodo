@@ -1,5 +1,12 @@
 # gotodo
 
+## Getting started
+
+```sh
+go build cmd/main.go
+./main
+```
+
 ## Coverage report
 
 ```sh
