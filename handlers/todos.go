@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/mux"
 	"github.com/mathieux51/gotodo/model"
 )
 
@@ -84,15 +85,39 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 
 // TodosByIDHandler ...
 func TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := uuid.Parse(vars["id"])
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 	switch r.Method {
 	case http.MethodGet:
-		io.WriteString(w, "GET")
-	case http.MethodPost:
-		io.WriteString(w, "POST")
+		todo, err := model.GetTodoByID(id)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		// Response
+		jsonTodo, err := json.Marshal(todo)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		w.Header().Set("content-type", "application/json")
+		w.Write(jsonTodo)
+
 	case http.MethodPut:
 		io.WriteString(w, "PUT")
 	case http.MethodDelete:
-		io.WriteString(w, "DELETE")
+		err := model.DeleteTodoByID(id)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		w.WriteHeader(200)
 
 	}
 
