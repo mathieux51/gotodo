@@ -5,8 +5,10 @@ import (
 )
 
 func TestAddTodo(t *testing.T) {
-	db := CreateDB()
-
+	db, err := GetDB()
+	if err != nil {
+		t.Error(err)
+	}
 	if len(db.Todos) != 0 {
 		t.Errorf("db.Todos should be empty")
 	}
