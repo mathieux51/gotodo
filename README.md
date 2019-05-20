@@ -7,6 +7,10 @@ go build cmd/main.go
 ./main
 ```
 
+# To do list
+
+- [ ] Update memory profile commands
+
 ## Coverage report
 
 ```sh
