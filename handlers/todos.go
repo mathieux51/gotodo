@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"io"
 	"io/ioutil"
 	"net/http"
 
@@ -11,11 +10,22 @@ import (
 	"github.com/mathieux51/gotodo/model"
 )
 
-// Todo ...
-type Todo struct {
-	ID        uuid.UUID `json:"id"`
-	Text      string    `json:"text"`
-	Completed bool      `json:"completed"`
+func getTodoFromBody(r *http.Request) (model.Todo, error) {
+	var t model.Todo
+
+	// Read body
+	b, err := ioutil.ReadAll(r.Body)
+	defer r.Body.Close()
+	if err != nil {
+		return t, nil
+	}
+
+	// Unmarshal
+	err = json.Unmarshal(b, &t)
+	if err != nil {
+		return t, err
+	}
+	return t, nil
 }
 
 // TodosHandler ...
@@ -40,17 +50,7 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 
 	case http.MethodPost:
 
-		// Read body
-		b, err := ioutil.ReadAll(r.Body)
-		defer r.Body.Close()
-		if err != nil {
-			http.Error(w, err.Error(), 500)
-			return
-		}
-
-		// Unmarshal
-		var t model.Todo
-		err = json.Unmarshal(b, &t)
+		t, err := getTodoFromBody(r)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
@@ -65,7 +65,7 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 		t.ID = id
 
 		// Save to db
-		if err = model.AddTodo(t); err != nil {
+		if err = model.PostTodo(t); err != nil {
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -109,14 +109,26 @@ func TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 		w.Write(jsonTodo)
 
 	case http.MethodPut:
-		io.WriteString(w, "PUT")
+
+		t, err := getTodoFromBody(r)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		todo := model.Todo{ID: id, Text: t.Text, Completed: t.Completed}
+		err = model.PutTodoByID(todo)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		w.WriteHeader(200)
+
 	case http.MethodDelete:
 		err := model.DeleteTodoByID(id)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
 		}
-
 		w.WriteHeader(200)
 
 	}

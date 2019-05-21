@@ -25,6 +25,18 @@ type DB struct {
 	Todos `json:"todos"`
 }
 
+func saveToDisk(db DB) error {
+	// Save to DB
+	f, err := json.MarshalIndent(db, "", " ")
+	if err != nil {
+		return err
+	}
+	if err = ioutil.WriteFile("model/db.json", f, 0644); err != nil {
+		return err
+	}
+	return nil
+}
+
 // GetDB ...
 func GetDB() (DB, error) {
 	db := DB{}
@@ -71,21 +83,16 @@ func GetTodoByID(id uuid.UUID) (Todo, error) {
 	return todo, errors.New("Todo not found")
 }
 
-// AddTodo append a todo to the todos array
-func AddTodo(t Todo) error {
+// PostTodo append a todo to the todos array
+func PostTodo(t Todo) error {
 	db, err := GetDB()
 	if err != nil {
 		return err
 	}
 	db.Todos = append(db.Todos, t)
 
-	// Save to DB
-	f, err := json.MarshalIndent(db, "", " ")
+	err = saveToDisk(db)
 	if err != nil {
-		return err
-	}
-
-	if err = ioutil.WriteFile("model/db.json", f, 0644); err != nil {
 		return err
 	}
 
@@ -111,17 +118,36 @@ func DeleteTodoByID(id uuid.UUID) error {
 			todos := remove(db.Todos, i)
 			db.Todos = todos
 
-			// Save to DB
-			f, err := json.MarshalIndent(db, "", " ")
+			err := saveToDisk(db)
 			if err != nil {
 				return err
 			}
-			if err = ioutil.WriteFile("model/db.json", f, 0644); err != nil {
+			// log
+			log.Println("> DELETE Todo")
+			return nil
+		}
+	}
+
+	return errors.New("Todo not found")
+}
+
+// PutTodoByID ...
+func PutTodoByID(todo Todo) error {
+	db, err := GetDB()
+	if err != nil {
+		return err
+	}
+
+	for _, v := range db.Todos {
+		if v.ID == todo.ID {
+			v.Text = todo.Text
+			v.Completed = todo.Completed
+
+			err := saveToDisk(db)
+			if err != nil {
 				return err
 			}
 
-			// log
-			log.Println("> DELETE Todo")
 			return nil
 		}
 	}

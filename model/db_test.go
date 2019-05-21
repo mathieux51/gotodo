@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestAddTodo(t *testing.T) {
+func TestPostTodo(t *testing.T) {
 	db, err := GetDB()
 	if err != nil {
 		t.Error(err)
@@ -15,7 +15,7 @@ func TestAddTodo(t *testing.T) {
 
 	text := "Do stuff"
 	completed := false
-	db.AddTodo(text, completed)
+	db.PostTodo(text, completed)
 
 	if len(db.Todos) != 1 {
 		t.Errorf("db.Todos should have one Todo")
