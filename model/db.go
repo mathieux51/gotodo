@@ -25,7 +25,7 @@ type DB struct {
 	Todos `json:"todos"`
 }
 
-func saveToDisk(db DB) error {
+func saveToDisk(db *DB) error {
 	// Save to DB
 	f, err := json.MarshalIndent(db, "", " ")
 	if err != nil {
@@ -34,6 +34,9 @@ func saveToDisk(db DB) error {
 	if err = ioutil.WriteFile("model/db.json", f, 0644); err != nil {
 		return err
 	}
+
+	// log
+	log.Println("> SAVED")
 	return nil
 }
 
@@ -91,7 +94,7 @@ func PostTodo(t Todo) error {
 	}
 	db.Todos = append(db.Todos, t)
 
-	err = saveToDisk(db)
+	err = saveToDisk(&db)
 	if err != nil {
 		return err
 	}
@@ -118,7 +121,7 @@ func DeleteTodoByID(id uuid.UUID) error {
 			todos := remove(db.Todos, i)
 			db.Todos = todos
 
-			err := saveToDisk(db)
+			err := saveToDisk(&db)
 			if err != nil {
 				return err
 			}
@@ -138,15 +141,18 @@ func PutTodoByID(todo Todo) error {
 		return err
 	}
 
-	for _, v := range db.Todos {
+	for i, v := range db.Todos {
 		if v.ID == todo.ID {
-			v.Text = todo.Text
-			v.Completed = todo.Completed
+			db.Todos[i].Text = todo.Text
+			db.Todos[i].Completed = todo.Completed
 
-			err := saveToDisk(db)
+			err := saveToDisk(&db)
 			if err != nil {
 				return err
 			}
+
+			// log
+			log.Println("> PUT Todo")
 
 			return nil
 		}
