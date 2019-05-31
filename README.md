@@ -9,6 +9,10 @@ go build cmd/main.go
 
 # To do list
 
+- [ ] v2 with [redis](https://godoc.org/github.com/gomodule/redigo/redis)
+- [ ] `docker-compose`
+- [ ] Kubernetes local
+- [ ] Kubernetes remote
 - [ ] Update memory profile commands
 
 ## Coverage report
