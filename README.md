@@ -3,12 +3,19 @@
 ## Getting started
 
 ```sh
-go build cmd/main.go
-./main
+make start
 ```
 
 # To do list
 
+- [x] v2 with [redis](https://godoc.org/github.com/gomodule/redigo/redis)
+- [ ] [`docker-compose` vs `Kompose`](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/#install-kompose)
+- [ ] Create docker image
+- [ ] Add docker image to [registry](https://cloud.canister.io)
+- [ ] Init Helm in minikube
+- [ ] Create Chart
+- [ ] Check CRUD locally
+- [ ] Create helm release
 - [ ] Update memory profile commands
 
 ## Coverage report

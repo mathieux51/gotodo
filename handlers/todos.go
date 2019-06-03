@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
-	"github.com/google/uuid"
+	"github.com/gomodule/redigo/redis"
 	"github.com/gorilla/mux"
 	"github.com/mathieux51/gotodo/model"
 )
@@ -28,14 +29,23 @@ func getTodoFromBody(r *http.Request) (model.Todo, error) {
 	return t, nil
 }
 
-// TodosHandler ...
-func TodosHandler(w http.ResponseWriter, r *http.Request) {
+// TodoService ...
+type TodoService struct {
+	c redis.Conn
+}
+
+// NewTodoService ...
+func NewTodoService(c redis.Conn) *TodoService {
+	return &TodoService{c: c}
+}
+
+// TodoHander ...
+func (s TodoService) TodoHander(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 
 	case http.MethodGet:
-
 		// Response
-		todos, err := model.GetTodos()
+		todos, err := model.GetTodos(s.c)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
@@ -56,8 +66,8 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Generate uuid
-		id, err := uuid.NewRandom()
+		// Generate id
+		id, err := redis.Int(s.c.Do("incr", "todos:"))
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
@@ -65,7 +75,7 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 		t.ID = id
 
 		// Save to db
-		if err = model.PostTodo(t); err != nil {
+		if err = model.PostTodo(s.c, t); err != nil {
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -84,16 +94,16 @@ func TodosHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // TodosByIDHandler ...
-func TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
+func (s TodoService) TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id, err := uuid.Parse(vars["id"])
+	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 	switch r.Method {
 	case http.MethodGet:
-		todo, err := model.GetTodoByID(id)
+		todo, err := model.GetTodoByID(s.c, id)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
@@ -116,7 +126,7 @@ func TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		todo := model.Todo{ID: id, Text: t.Text, Completed: t.Completed}
-		err = model.PutTodoByID(todo)
+		err = model.PutTodoByID(s.c, todo)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
@@ -124,7 +134,7 @@ func TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 
 	case http.MethodDelete:
-		err := model.DeleteTodoByID(id)
+		err := model.DeleteTodoByID(s.c, id)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return

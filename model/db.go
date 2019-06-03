@@ -1,162 +1,117 @@
 package model
 
 import (
-	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"fmt"
 	"log"
-	"os"
 
-	"github.com/google/uuid"
+	"github.com/gomodule/redigo/redis"
 )
 
 // Todo ...
 type Todo struct {
-	ID        uuid.UUID `json:"id"`
-	Text      string    `json:"text"`
-	Completed bool      `json:"completed"`
+	ID        int    `json:"id" redis:"id"`
+	Text      string `json:"text" redis:"text"`
+	Completed bool   `json:"completed" redis:"completed"`
 }
 
 // Todos ...
 type Todos []Todo
 
-// DB ...
-type DB struct {
-	Todos `json:"todos"`
+func getTodoKey(id int) string {
+	return fmt.Sprintf("todo:%v", id)
 }
 
-func saveToDisk(db *DB) error {
-	// Save to DB
-	f, err := json.MarshalIndent(db, "", " ")
+// NewDB ...
+func NewDB(dataSource string) (redis.Conn, error) {
+	// redis://user:secret@localhost:6379/0?foo=bar&qux=baz
+	c, err := redis.DialURL(dataSource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	if err = ioutil.WriteFile("model/db.json", f, 0644); err != nil {
-		return err
-	}
-
-	// log
-	log.Println("> SAVED")
-	return nil
-}
-
-// GetDB ...
-func GetDB() (DB, error) {
-	db := DB{}
-	j, err := os.Open("model/db.json")
-	// if we os.Open returns an error then handle it
-	if err != nil {
-		return db, err
-	}
-	defer j.Close()
-	b, _ := ioutil.ReadAll(j)
-	// var todos Todos
-
-	if err = json.Unmarshal(b, &db); err != nil {
-		return db, err
-	}
-	return db, nil
+	return c, nil
 }
 
 // GetTodos ...
-func GetTodos() (Todos, error) {
-	db, err := GetDB()
+func GetTodos(c redis.Conn) (*Todos, error) {
+	// ⚠️ Could be good to have an example with hscan to compare perfs
+
+	// Should return the last 10 todos
+	// or it should accept parameter to get a specific range
+	todoList, err := redis.Strings(c.Do("smembers", "todos"))
 	if err != nil {
-		return db.Todos, err
+		return nil, err
 	}
-	log.Println("> GET Todos")
-	return db.Todos, nil
+	var todos Todos
+
+	for _, v := range todoList {
+		t, err := redis.Values(c.Do("hgetall", v))
+		if err != nil {
+			return nil, err
+		}
+		var todo Todo
+		if err := redis.ScanStruct(t, &todo); err != nil {
+			return nil, err
+		}
+		todos = append(todos, todo)
+
+	}
+	log.Println("> GET Todos", todos)
+	return &todos, nil
 }
 
 // GetTodoByID ...
-func GetTodoByID(id uuid.UUID) (Todo, error) {
-	var todo Todo
-	db, err := GetDB()
+func GetTodoByID(c redis.Conn, id int) (*Todo, error) {
+	t, err := redis.Values(c.Do("hgetall", fmt.Sprintf("todo:%v", id)))
 	if err != nil {
-		return todo, err
+		return nil, err
 	}
-
-	for _, v := range db.Todos {
-		if v.ID == id {
-			todo = v
-			return todo, nil
-		}
+	// Test me
+	if t == nil {
+		return nil, errors.New("Todo not found")
 	}
-
-	return todo, errors.New("Todo not found")
+	var todo Todo
+	if err := redis.ScanStruct(t, &todo); err != nil {
+		return nil, err
+	}
+	return &todo, nil
 }
 
-// PostTodo append a todo to the todos array
-func PostTodo(t Todo) error {
-	db, err := GetDB()
-	if err != nil {
+// PostTodo ...
+func PostTodo(c redis.Conn, t Todo) error {
+	key := getTodoKey(t.ID)
+
+	// Keep track of all the todos
+	c.Send("sadd", "todos", key)
+
+	// Create a todo hash, redis-cli: todo:id text Hey completed false id someID
+	if _, err := c.Do("HMSET", redis.Args{}.Add(key).AddFlat(&t)...); err != nil {
 		return err
 	}
-	db.Todos = append(db.Todos, t)
 
-	err = saveToDisk(&db)
-	if err != nil {
-		return err
-	}
-
-	// log
+	// logging
 	log.Println("> POST Todo: ", t.ID)
 	return nil
 }
 
-func remove(t Todos, i int) Todos {
-	t[i] = t[len(t)-1]
-	return t[:len(t)-1]
-}
-
 // DeleteTodoByID ...
-func DeleteTodoByID(id uuid.UUID) error {
-	db, err := GetDB()
-	if err != nil {
+func DeleteTodoByID(c redis.Conn, id int) error {
+	key := getTodoKey(id)
+	if _, err := c.Do("srem", "todos", key); err != nil {
+		return err
+	}
+	if _, err := c.Do("del", key); err != nil {
 		return err
 	}
 
-	for i, v := range db.Todos {
-		if v.ID == id {
-			todos := remove(db.Todos, i)
-			db.Todos = todos
-
-			err := saveToDisk(&db)
-			if err != nil {
-				return err
-			}
-			// log
-			log.Println("> DELETE Todo")
-			return nil
-		}
-	}
-
-	return errors.New("Todo not found")
+	return nil
 }
 
 // PutTodoByID ...
-func PutTodoByID(todo Todo) error {
-	db, err := GetDB()
-	if err != nil {
+func PutTodoByID(c redis.Conn, todo Todo) error {
+	key := getTodoKey(todo.ID)
+	if _, err := c.Do("HMSET", redis.Args{}.Add(key).AddFlat(&todo)...); err != nil {
 		return err
 	}
-
-	for i, v := range db.Todos {
-		if v.ID == todo.ID {
-			db.Todos[i].Text = todo.Text
-			db.Todos[i].Completed = todo.Completed
-
-			err := saveToDisk(&db)
-			if err != nil {
-				return err
-			}
-
-			// log
-			log.Println("> PUT Todo")
-
-			return nil
-		}
-	}
-
-	return errors.New("Todo not found")
+	return nil
 }
