@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "82b6f233-743c-4b29-ab14-b5b5af6f098d",
+		"name": "Todos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/todos",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{endpoint}}/todos",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/todos/:id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{endpoint}}/todos/9",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"todos",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/todos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"Let's get Schwifty\",\n    \"completed\": false\n}"
+				},
+				"url": {
+					"raw": "{{endpoint}}/todos",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/todos/:id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{endpoint}}/todos/9",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"todos",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/todos/:id",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"Time to get Schwifty\",\n    \"completed\": true\n}"
+				},
+				"url": {
+					"raw": "{{endpoint}}/todos/8",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"todos",
+						"8"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
