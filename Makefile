@@ -24,3 +24,11 @@ docker_build:
 .PHONY: docker_run
 docker_run: 
 		docker run --rm -it --name gotodo -p 3000:3000 mathieux51/gotodo:0.1.0
+
+.PHONY: docker_tag
+docker_tag:
+		docker tag 8fa262d372d2 cloud.canister.io:5000/mathieux51/gotodo:latest
+
+.PHONY: docker_push
+docker_push:
+		docker push cloud.canister.io:5000/mathieux51/gotodo

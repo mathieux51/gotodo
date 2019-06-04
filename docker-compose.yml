@@ -5,7 +5,7 @@ services:
     ports:
       - "6379:6379"
   gotodo:
-    build: .
+    image: "cloud.canister.io:5000/mathieux51/gotodo:latest"
     ports:
       - "3000:3000"
     links:
