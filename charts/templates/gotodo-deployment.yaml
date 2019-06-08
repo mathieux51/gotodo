@@ -18,13 +18,15 @@ spec:
         io.kompose.service: gotodo
     spec:
       containers:
-      - env:
-        - name: REDIS_HOST
-          value: redis
-        image: cloud.canister.io:5000/mathieux51/gotodo:latest
-        name: gotodo
-        ports:
-        - containerPort: 3000
-        resources: {}
+        - env:
+            - name: REDIS_HOST
+              value: redis
+          image: cloud.canister.io:5000/mathieux51/gotodo:latest
+          name: gotodo
+          ports:
+            - containerPort: 3000
+          resources: {}
       restartPolicy: Always
+      imagePullSecrets:
+        - name: regcred
 status: {}
