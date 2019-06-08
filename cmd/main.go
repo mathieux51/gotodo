@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/mathieux51/gotodo/handlers"
 	"github.com/mathieux51/gotodo/model"
@@ -10,9 +12,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func main() {
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
+}
 
-	c, err := model.NewDB("redis://127.0.0.1:6379")
+func main() {
+	redisHost := getEnv("REDIS_HOST", "127.0.0.1")
+	redisURL := fmt.Sprintf("redis://%v:6379", redisHost)
+	c, err := model.NewDB(redisURL)
 	if err != nil {
 		log.Panic(err)
 	}
