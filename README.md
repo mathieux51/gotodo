@@ -16,7 +16,13 @@ make start
 - [x] Create Chart
 - [x] Check CRUD locally
 - [x] Create helm release
+- [ ] Read about Makefile
+- [ ] Fix Makefiles
 - [ ] Update memory profile commands
+- [ ] gotodo frontend
+- [ ] Check auth
+- [ ] Oauth with google
+- [ ] session in Redis
 
 ## Coverage report
 
