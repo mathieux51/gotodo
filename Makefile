@@ -1,34 +1,53 @@
-.PHONY: build
-build:
-		go build cmd/main.go
-
-.PHONY: run
-run:
-		./main
-
-.PHONY: start
-start: build run
+DOCKER_ID = mathieux51
+REPOSITORY = gotodo
+VERSION = $(shell head -1 VERSION)
+DOCKER_REGISTRY = cloud.canister.io:5000
 
 .PHONY: clean
 clean: 
-		rm -rf main temp 
+		rm -rf main temp
 
-.PHONY: helm_debug
-helm_debug:
+# Docker
+.PHONY: docker-build
+docker-build:
+		docker build --tag $(DOCKER_ID):$(VERSION) .
+
+.PHONY: docker-run
+docker-run: 
+		docker run --rm -it --name $(REPOSITORY) -p 3000:3000 $(DOCKER_ID)/$(REPOSITORY):$(VERSION)
+
+.PHONY: docker-tag 
+docker-tag:
+		docker tag $(DOCKER_ID):$(VERSION) $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION)
+
+.PHONY: docker-push
+docker-push:
+		docker push $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY)
+
+.PHONY: docker-update-version
+docker-update-version:
+	date '+%Y%m%d.%H%M.%S' > VERSION
+
+.PHONY: docker-update
+docker-update: docker-update-version docker-build docker-tag docker-push
+
+# .PHONY: login
+# login:
+# 	docker login -u $$DOCKER_USERNAME -p $$DOCKER_PASSWORD
+
+# Go
+.PHONY: go-build
+go-build:
+		go build cmd/main.go
+
+.PHONY: go-run
+go-run:
+		main
+
+.PHONY: start
+start: go-build go-run
+
+# Helm
+.PHONY: helm-debug
+helm-debug:
 		 helm install --dry-run --debug ./chart
-
-.PHONY: docker_build
-docker_build:
-		docker build -t mathieux51/gotodo:0.1.0 .
-
-.PHONY: docker_run
-docker_run: 
-		docker run --rm -it --name gotodo -p 3000:3000 mathieux51/gotodo:0.1.0
-
-.PHONY: docker_tag
-docker_tag:
-		docker tag 8fa262d372d2 cloud.canister.io:5000/mathieux51/gotodo:latest
-
-.PHONY: docker_push
-docker_push:
-		docker push cloud.canister.io:5000/mathieux51/gotodo
