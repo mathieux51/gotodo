@@ -16,13 +16,15 @@ make start
 - [x] Create Chart
 - [x] Check CRUD locally
 - [x] Create helm release
-- [ ] Read about Makefile
-- [ ] Fix Makefiles
-- [ ] Update memory profile commands
-- [ ] gotodo frontend
+- [x] Read about Makefile
+- [x] Fix Makefile
+- [ ] Add simple gotodo frontend
 - [ ] Check auth
 - [ ] Oauth with google
 - [ ] session in Redis
+- [ ] Fix file structure, go files should be in different folder
+- [ ] Update memory profile commands
+- [ ] Update frontend with [tailwindcss](https://tailwindcss.com/docs/controlling-file-size/#app)
 
 ## Coverage report
 
