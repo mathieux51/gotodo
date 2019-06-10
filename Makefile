@@ -8,21 +8,21 @@ clean:
 		rm -rf main temp
 
 # Docker
-.PHONY: docker-build
-docker-build:
-		docker build --tag $(DOCKER_ID):$(VERSION) .
-
-.PHONY: docker-run
-docker-run: 
-		docker run --rm -it --name $(REPOSITORY) -p 3000:3000 $(DOCKER_ID)/$(REPOSITORY):$(VERSION)
-
 .PHONY: docker-tag 
 docker-tag:
 		docker tag $(DOCKER_ID):$(VERSION) $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION)
 
+.PHONY: docker-build
+docker-build:
+		docker build --tag $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION) . 
+
+.PHONY: docker-run
+docker-run: 
+		docker run --rm -it --name $(REPOSITORY) -p 3000:3000 $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION)
+
 .PHONY: docker-push
 docker-push:
-		docker push $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY)
+		docker push $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION)
 
 .PHONY: docker-update-version
 docker-update-version:

@@ -18,11 +18,14 @@ make start
 - [x] Create helm release
 - [x] Read about Makefile
 - [x] Fix Makefile
+- [ ] Debug go code inside docker container
+- [ ] Organise backend, frontend code and devops code
+- [ ] Find equivalent to package.json/requirements.txt for go
+- [ ] Write some doc about it
 - [ ] Add simple gotodo frontend
 - [ ] Check auth
 - [ ] Oauth with google
 - [ ] session in Redis
-- [ ] Fix file structure, go files should be in different folder
 - [ ] Update memory profile commands
 - [ ] Update frontend with [tailwindcss](https://tailwindcss.com/docs/controlling-file-size/#app)
 
