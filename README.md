@@ -1,12 +1,17 @@
 # gotodo
 
+Simple todo list app. Stack:
+
+- Backend: Golang and Redis
+- Sapper (Svelte)
+
 ## Getting started
 
 ```sh
 make start
 ```
 
-# To do list
+# WIP
 
 - [x] v2 with [redis](https://godoc.org/github.com/gomodule/redigo/redis)
 - [ ] [`docker-compose` vs `Kompose`](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/#install-kompose)
