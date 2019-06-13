@@ -24,7 +24,7 @@ spec:
           image: cloud.canister.io:5000/mathieux51/gotodo:latest
           name: gotodo
           ports:
-            - containerPort: 3000
+            - containerPort: 3001
           resources: {}
       restartPolicy: Always
       imagePullSecrets:

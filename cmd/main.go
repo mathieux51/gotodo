@@ -33,6 +33,16 @@ func main() {
 
 	r.HandleFunc("/todos", todoService.TodoHander).Methods("GET", "POST")
 	r.HandleFunc("/todos/{id}", todoService.TodosByIDHandler).Methods("GET", "POST", "PUT", "DELETE")
-	log.Println("> Listening on port 3000")
-	log.Fatal(http.ListenAndServe(":3000", r))
+
+	port := "3001"
+	done := make(chan bool)
+
+	go func() {
+		err := http.ListenAndServe(":"+port, r)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+	log.Printf("> Listening on port %v", port)
+	<-done
 }
