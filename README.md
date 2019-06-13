@@ -18,7 +18,7 @@ make start
 - [x] Create helm release
 - [x] Read about Makefile
 - [x] Fix Makefile
-- [ ] Deploy on DigitalOcean (`curl 104.248.46.178:30010/todos` => Connection refused)
+- [ ] Deploy on DigitalOcean
 - [ ] Debug go code inside docker container
 - [ ] Organise backend, frontend code and devops code
 - [ ] Find equivalent to package.json/requirements.txt for go
