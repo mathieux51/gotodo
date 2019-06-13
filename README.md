@@ -3,7 +3,7 @@
 Simple todo list app. Stack:
 
 - Backend: Golang and Redis
-- Sapper (Svelte)
+- Frontend: Sapper (Svelte)
 
 ## Getting started
 
@@ -14,7 +14,7 @@ make start
 # WIP
 
 - [x] v2 with [redis](https://godoc.org/github.com/gomodule/redigo/redis)
-- [ ] [`docker-compose` vs `Kompose`](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/#install-kompose)
+- [x] [`docker-compose` vs `Kompose`](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/#install-kompose)
 - [x] Create docker image
 - [x] Add docker image to [registry](https://cloud.canister.io)
 - [x] Init Helm in minikube
