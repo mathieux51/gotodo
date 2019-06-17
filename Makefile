@@ -8,6 +8,10 @@ clean:
 		rm -rf main temp
 
 # Docker
+.PHONY: docker-login
+docker-login:
+		docker login $(DOCKER_REGISTRY) -u $(DOCKER_ID)
+
 .PHONY: docker-build
 docker-build:
 		docker build --tag $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION) . 
@@ -25,7 +29,7 @@ docker-update-version:
 	date '+%Y%m%d.%H%M.%S' > VERSION
 
 .PHONY: docker-update
-docker-update: docker-update-version docker-build docker-tag docker-push
+docker-update: docker-login docker-update-version docker-build docker-push
 
 # .PHONY: login
 # login:
