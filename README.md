@@ -11,6 +11,27 @@ Simple todo list app. Stack:
 make start
 ```
 
+## Docker
+
+```
+make docker-update
+```
+
+This command will ask for loging, bump the version, build the new docker image and push it to the private repo.
+
+## Kubernetes
+
+```
+kubectl cluster-info
+kubectl apply -f deploy/config/tiller-clusterrolebinding.yaml
+helm init --service-account tiller
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
+helm install deploy/charts
+# If this command fails with `Error: could not find tiller`
+kubectl -n kube-system delete deployment tiller-deploy
+kubectl -n kube-system delete service/tiller-deploy
+```
+
 # WIP
 
 - [x] v2 with [redis](https://godoc.org/github.com/gomodule/redigo/redis)

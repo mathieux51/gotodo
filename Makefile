@@ -31,10 +31,6 @@ docker-update-version:
 .PHONY: docker-update
 docker-update: docker-login docker-update-version docker-build docker-push
 
-# .PHONY: login
-# login:
-# 	docker login -u $$DOCKER_USERNAME -p $$DOCKER_PASSWORD
-
 # Go
 .PHONY: go-build
 go-build:
@@ -47,7 +43,8 @@ go-run:
 .PHONY: start
 start: go-build go-run
 
-# Helm
-.PHONY: helm-debug
-helm-debug:
-		 helm install --dry-run --debug ./chart
+# Kubernetes
+.PHONY: k8s-init-remote
+k8s-init-remote:
+		kubectl apply -f deploy/config/tiller-clusterrolebinding.yaml; \
+		helm init --service-account tiller; \
