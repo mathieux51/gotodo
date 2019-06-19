@@ -44,6 +44,15 @@ kubectl -n kube-system delete service/tiller-deploy
 - [x] Create helm release
 - [x] Read about Makefile
 - [x] Fix Makefile
+- [x] Replace Minikube with docker-for-desktop
+- [x] Replace cloud.canister.io with registry.gitlab.com
+- [ ] Command for
+
+```
+kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.docker/config.json> \ --type=kubernetes.io/dockerconfigjson
+```
+
+- [ ] Change to docker login `--password-stdi`
 - [ ] Deploy on DigitalOcean
 - [ ] Debug go code inside docker container
 - [ ] Organise backend, frontend code and devops code
