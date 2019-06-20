@@ -7,6 +7,7 @@ REPOSITORY = gotodo
 VERSION = $(shell head -1 VERSION)
 DOCKER_REGISTRY = registry.gitlab.com
 BINARY_NAME = main
+IMAGE_NAME = $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION)
 
 .PHONY: clean
 clean: 
@@ -19,15 +20,15 @@ docker-login:
 
 .PHONY: docker-build
 docker-build:
-		docker build --tag $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION) . 
+		docker build --tag $(IMAGE_NAME) . 
 
 .PHONY: docker-run
 docker-run: 
-		docker run --rm -it --name $(REPOSITORY) -p 3001:3001 $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION)
+		docker run --rm -it --name $(REPOSITORY) $(IMAGE_NAME)
 
 .PHONY: docker-push
 docker-push:
-		docker push $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION)
+		docker push $(IMAGE_NAME)
 
 .PHONY: docker-update-version
 docker-update-version:
