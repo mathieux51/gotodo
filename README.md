@@ -22,11 +22,6 @@ This command will ask for loging, bump the version, build the new docker image a
 ## Kubernetes
 
 ```
-kubectl cluster-info
-kubectl apply -f deploy/config/tiller-clusterrolebinding.yaml
-helm init --service-account tiller
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
-helm install deploy/charts
 # If this command fails with `Error: could not find tiller`
 kubectl -n kube-system delete deployment tiller-deploy
 kubectl -n kube-system delete service/tiller-deploy
