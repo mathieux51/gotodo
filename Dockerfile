@@ -6,6 +6,5 @@ COPY . .
 RUN go get github.com/gomodule/redigo/redis
 RUN go get github.com/gorilla/mux
 EXPOSE 3001:3001
-# EXPOSE 6379:6379
 RUN make go-build
 CMD ["./main"]
