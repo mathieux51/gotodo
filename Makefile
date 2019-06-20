@@ -6,7 +6,7 @@ DOCKER_ID= mathieux51
 REPOSITORY = gotodo
 VERSION = $(shell head -1 VERSION)
 DOCKER_REGISTRY = registry.gitlab.com
-BINARY_NAME = gotodo
+BINARY_NAME = main
 
 .PHONY: clean
 clean: 
@@ -37,9 +37,13 @@ docker-update-version:
 docker-update: docker-login docker-update-version docker-build docker-push
 
 # Go
+.PHONY: go-build
+go-build:
+		go build -o $(BINARY_NAME) -v cmd/main.go
+
 .PHONY: start
 start:
-		go build -o $(BINARY_NAME) -v cmd/main.go
+		make go-build
 		./$(BINARY_NAME)
 
 # Kubernetes
