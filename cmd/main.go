@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/mathieux51/gotodo/db"
 	"github.com/mathieux51/gotodo/handlers"
-	"github.com/mathieux51/gotodo/model"
 
 	"github.com/gorilla/mux"
 )
@@ -22,12 +22,13 @@ func getEnv(key, fallback string) string {
 func main() {
 	redisHost := getEnv("REDIS_HOST", "127.0.0.1")
 	redisURL := fmt.Sprintf("redis://%v:6379", redisHost)
-	c, err := model.NewDB(redisURL)
+	conn, err := db.NewDB(redisURL)
 	if err != nil {
 		log.Panic(err)
 	}
+	s := db.Storage{Conn: conn}
 
-	todoService := handlers.NewTodoService(c)
+	todoService := handlers.NewTodoService(s)
 
 	r := mux.NewRouter()
 

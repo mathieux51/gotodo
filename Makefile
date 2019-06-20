@@ -2,10 +2,11 @@
 include .env
 export
 
-DOCKER_ID = mathieux51
+DOCKER_ID= mathieux51
 REPOSITORY = gotodo
 VERSION = $(shell head -1 VERSION)
 DOCKER_REGISTRY = registry.gitlab.com
+BINARY_NAME = gotodo
 
 .PHONY: clean
 clean: 
@@ -36,16 +37,10 @@ docker-update-version:
 docker-update: docker-login docker-update-version docker-build docker-push
 
 # Go
-.PHONY: go-build
-go-build:
-		go build cmd/main.go
-
-.PHONY: go-run
-go-run:
-		main
-
 .PHONY: start
-start: go-build go-run
+start:
+		go build -o $(BINARY_NAME) -v cmd/main.go
+		./$(BINARY_NAME)
 
 # Kubernetes
 .PHONY: k8s-create-secret
@@ -54,7 +49,7 @@ k8s-create-secret:
 
 .PHONY: k8s-init
 k8s-init:
-		k8s-create-secret; \
+		make k8s-create-secret; \
 		kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml; \
 		kubectl apply -f deploy/config/tiller-clusterrolebinding.yaml; \
 		helm init --service-account tiller; \
