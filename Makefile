@@ -5,9 +5,10 @@ export
 DOCKER_ID= mathieux51
 REPOSITORY = gotodo
 VERSION = $(shell head -1 VERSION)
-DOCKER_REGISTRY = https://registry.gitlab.com
+DOCKER_REGISTRY = registry.gitlab.com
 BINARY_NAME = main
 IMAGE_NAME = $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION)
+RELEASE_NAME = dev
 
 .PHONY: clean
 clean: 
@@ -50,18 +51,24 @@ start:
 # Kubernetes
 .PHONY: k8s-create-secret
 k8s-create-secret:
-		@kubectl create secret docker-registry regcred --docker-server=$(DOCKER_REGISTRY) --docker-username=$(DOCKER_ID) --docker-password=$(DOCKER_REGISTRY_PWD) -o yaml --dry-run > deploy/charts/secret.yaml
+		@kubectl create secret docker-registry regcred --docker-server=$(DOCKER_REGISTRY) --docker-username=$(DOCKER_ID) --docker-password=$(DOCKER_REGISTRY_PWD) -o yaml --dry-run > deploy/charts/templates/secret.yaml
 
 .PHONY: k8s-init
 k8s-init:
+		kubectl -n kube-system delete deployment tiller-deploy; \
+		kubectl -n kube-system delete service/tiller-deploy; \
 		make k8s-create-secret; \
 		kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml; \
 		kubectl apply -f deploy/config/tiller-clusterrolebinding.yaml; \
-		helm --service-account tiller --upgrade; \
+		helm init --upgrade --service-account tiller
 
 .PHONY: install
 install:
-		helm install deploy/charts
+		helm install deploy/charts --name $(RELEASE_NAME)
+
+.PHONY: del
+del:
+		helm del --purge $(RELEASE_NAME) 
 
 .PHONY: token
 token:
