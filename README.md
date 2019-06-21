@@ -41,12 +41,13 @@ kubectl -n kube-system delete service/tiller-deploy
 - [x] Fix Makefile
 - [x] Replace Minikube with docker-for-desktop
 - [x] Replace cloud.canister.io with registry.gitlab.com
-- [ ] Command for
+- [x] Command for
 
 ```
 kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.docker/config.json> \ --type=kubernetes.io/dockerconfigjson
 ```
 
+- [ ] Start using Helm values and `_helpers.tpl` because tag ":latest" doesn't work
 - [ ] Change to docker login `--password-stdi`
 - [ ] Deploy on DigitalOcean
 - [ ] Debug go code inside docker container

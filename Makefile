@@ -31,6 +31,10 @@ docker-run:
 docker-push:
 		docker push $(IMAGE_NAME)
 
+.PHONY: docker-pull
+docker-pull:
+		docker pull $(IMAGE_NAME)
+
 .PHONY: docker-update-version
 docker-update-version:
 	date '+%Y%m%d.%H%M.%S' > VERSION
