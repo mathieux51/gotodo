@@ -21,7 +21,7 @@ spec:
         - env:
             - name: REDIS_HOST
               value: redis
-          image: registry.gitlab.com/mathieux51/gotodo:latest
+          image: registry.gitlab.com/mathieux51/gotodo:{{ .Values.DOCKER_IMAGE_VERSION }}
           imagePullPolicy: Always
           name: gotodo
           ports:

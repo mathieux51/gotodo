@@ -47,7 +47,7 @@ kubectl -n kube-system delete service/tiller-deploy
 kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.docker/config.json> \ --type=kubernetes.io/dockerconfigjson
 ```
 
-- [ ] Start using Helm values and `_helpers.tpl` because tag ":latest" doesn't work
+- [ ] Find to way to get VERSION to helm Values because tag ":latest" doesn't work
 - [ ] Change to docker login `--password-stdi`
 - [ ] Deploy on DigitalOcean
 - [ ] Debug go code inside docker container

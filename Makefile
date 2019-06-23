@@ -2,13 +2,8 @@
 include .env
 export
 
-DOCKER_ID= mathieux51
-REPOSITORY = gotodo
-VERSION = $(shell head -1 VERSION)
-DOCKER_REGISTRY = registry.gitlab.com
-BINARY_NAME = main
-IMAGE_NAME = $(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(VERSION)
-RELEASE_NAME = dev
+DOCKER_IMAGE_VERSION=$(shell head -1 VERSION)
+IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(DOCKER_IMAGE_VERSION)
 
 .PHONY: clean
 clean: 
@@ -68,8 +63,8 @@ k8s-init:
 
 .PHONY: install
 install:
-		helm install deploy/charts --name $(RELEASE_NAME)
-
+		@helm install --name $(RELEASE_NAME) --set DOCKER_IMAGE_VERSION=$(DOCKER_IMAGE_VERSION) deploy/charts 
+		
 .PHONY: del
 del:
 		helm del --purge $(RELEASE_NAME) 
