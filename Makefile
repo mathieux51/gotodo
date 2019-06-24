@@ -63,10 +63,10 @@ k8s-init:
 
 .PHONY: install
 install:
-		@helm install --name $(RELEASE_NAME) \
+		helm install --name $(RELEASE_NAME) \
 		--set imageName=$(IMAGE_NAME) \
-		--dry-run --debug \
 		deploy/charts 
+# --dry-run --debug \
 		
 .PHONY: del
 del:
