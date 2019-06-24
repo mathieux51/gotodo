@@ -1,19 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -c
-    kompose.version: 1.18.0 ()
-  creationTimestamp: null
   labels:
     io.kompose.service: gotodo
   name: gotodo
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         io.kompose.service: gotodo
     spec:
@@ -21,12 +15,10 @@ spec:
         - env:
             - name: REDIS_HOST
               value: redis
-          image: registry.gitlab.com/mathieux51/gotodo:{{ .Values.DOCKER_IMAGE_VERSION }}
+          image: {{ .Values.imageName }}
           name: gotodo
           ports:
             - containerPort: 3001
-          resources: {}
       restartPolicy: Always
       imagePullSecrets:
         - name: regcred
-status: {}

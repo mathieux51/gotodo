@@ -1,2 +1,4 @@
 #
 name: gotodo
+redisPort: 6379
+redisImage: redis:alpine

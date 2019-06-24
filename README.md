@@ -8,6 +8,7 @@ Simple todo list app. Stack:
 ## Getting started
 
 ```sh
+touch .env
 make start
 ```
 
@@ -22,7 +23,7 @@ This command will ask for loging, bump the version, build the new docker image a
 ## Kubernetes
 
 ```
-# If this command fails with `Error: could not find tiller`
+# If `Error: could not find tiller` run:
 kubectl -n kube-system delete deployment tiller-deploy
 kubectl -n kube-system delete service/tiller-deploy
 ```
@@ -47,11 +48,16 @@ kubectl -n kube-system delete service/tiller-deploy
 kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.docker/config.json> \ --type=kubernetes.io/dockerconfigjson
 ```
 
-- [ ] Find to way to get VERSION to helm Values because tag ":latest" doesn't work
-- [ ] Change to docker login `--password-stdi`
+- [x] Find to way to get VERSION to helm Values because tag ":latest" doesn't work
+- [x] Change to docker login `--password-stdi`
+- [ ] Replace NodePort by LoadBalancer
 - [ ] Deploy on DigitalOcean
+- [ ] Read more about Ingress
+- [ ] Replace LoadBalancer with Ingress
 - [ ] Debug go code inside docker container
 - [ ] Organise backend, frontend code and devops code
+- [ ] Add tests
+- [ ] Add Jenkins
 - [ ] Find equivalent to package.json/requirements.txt for go
 - [ ] Write some doc about it
 - [ ] Add simple gotodo frontend

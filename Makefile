@@ -12,7 +12,7 @@ clean:
 # Docker
 .PHONY: docker-login
 docker-login:
-		@docker login $(DOCKER_REGISTRY) -u $(DOCKER_ID) -p $(DOCKER_REGISTRY_PWD) 
+		@echo $(DOCKER_REGISTRY_PWD) | docker login $(DOCKER_REGISTRY) -u $(DOCKER_ID) --password-stdin
 
 .PHONY: docker-build
 docker-build:
@@ -63,7 +63,10 @@ k8s-init:
 
 .PHONY: install
 install:
-		@helm install --name $(RELEASE_NAME) --set DOCKER_IMAGE_VERSION=$(DOCKER_IMAGE_VERSION) deploy/charts 
+		@helm install --name $(RELEASE_NAME) \
+		--set imageName=$(IMAGE_NAME) \
+		--dry-run --debug \
+		deploy/charts 
 		
 .PHONY: del
 del:
