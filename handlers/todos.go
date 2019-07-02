@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -46,11 +47,13 @@ func (s TodoService) TodoHander(w http.ResponseWriter, r *http.Request) {
 		// Response
 		todos, err := s.storage.GetTodos()
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
 		jsonTodos, err := json.Marshal(todos)
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -61,6 +64,7 @@ func (s TodoService) TodoHander(w http.ResponseWriter, r *http.Request) {
 
 		t, err := getTodoFromBody(r)
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -68,6 +72,7 @@ func (s TodoService) TodoHander(w http.ResponseWriter, r *http.Request) {
 		// New id
 		id, err := s.storage.GetID()
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -75,6 +80,7 @@ func (s TodoService) TodoHander(w http.ResponseWriter, r *http.Request) {
 
 		// Save to db
 		if err = s.storage.PostTodo(t); err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -82,6 +88,7 @@ func (s TodoService) TodoHander(w http.ResponseWriter, r *http.Request) {
 		// Response
 		jsonTodo, err := json.Marshal(t)
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -95,6 +102,7 @@ func (s TodoService) TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
+		log.Println(err)
 		http.Error(w, err.Error(), 500)
 		return
 	}
@@ -102,6 +110,7 @@ func (s TodoService) TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		todo, err := s.storage.GetTodoByID(id)
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -109,6 +118,7 @@ func (s TodoService) TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 		// Response
 		jsonTodo, err := json.Marshal(todo)
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -119,12 +129,14 @@ func (s TodoService) TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 
 		t, err := getTodoFromBody(r)
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
 		todo := db.Todo{ID: id, Text: t.Text, Completed: t.Completed}
 		err = s.storage.PutTodoByID(todo)
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
@@ -133,6 +145,7 @@ func (s TodoService) TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodDelete:
 		err := s.storage.DeleteTodoByID(id)
 		if err != nil {
+			log.Println(err)
 			http.Error(w, err.Error(), 500)
 			return
 		}
