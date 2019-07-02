@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gomodule/redigo/redis"
 )
@@ -11,6 +12,24 @@ import (
 // Storage ...
 type Storage struct {
 	Conn redis.Conn
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
+}
+
+// NewStorage ...
+func NewStorage() (*Storage, error) {
+	redisHost := getEnv("REDIS_HOST", "127.0.0.1")
+	redisURL := fmt.Sprintf("redis://%v:6379", redisHost)
+	conn, err := NewDB(redisURL)
+	if err != nil {
+		return nil, err
+	}
+	return &Storage{Conn: conn}, nil
 }
 
 // Todo ...

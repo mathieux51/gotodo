@@ -30,11 +30,11 @@ func getTodoFromBody(r *http.Request) (db.Todo, error) {
 
 // TodoService ...
 type TodoService struct {
-	storage db.Storage
+	storage *db.Storage
 }
 
 // NewTodoService ...
-func NewTodoService(s db.Storage) *TodoService {
+func NewTodoService(s *db.Storage) *TodoService {
 	return &TodoService{storage: s}
 }
 
