@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/mathieux51/gotodo/db"
-	"github.com/mathieux51/gotodo/handlers"
+	"github.com/mathieux51/gotodo/todos"
 
 	"github.com/gorilla/mux"
 )
@@ -19,7 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 	// Init services
-	todoService := handlers.NewTodoService(s)
+	todoService := todos.NewTodoService(s)
 
 	// Router
 	r := mux.NewRouter()
