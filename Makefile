@@ -38,6 +38,13 @@ docker-update-version:
 docker-update: docker-login docker-update-version docker-build docker-push
 
 # Go
+.PHONY: coverage
+coverage:
+		mkdir -p temp; \
+		go test -coverprofile temp/cover.out ./...; \
+		go tool cover -html=temp/cover.out; \
+		rm -rf temp
+
 .PHONY: go-build
 go-build:
 		go build -o $(BINARY_NAME) -v cmd/main.go
@@ -54,12 +61,12 @@ k8s-create-secret:
 
 .PHONY: k8s-init
 k8s-init:
-		kubectl -n kube-system delete deployment tiller-deploy; \
-		kubectl -n kube-system delete service/tiller-deploy; \
+		helm reset; \
 		make k8s-create-secret; \
-		kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml; \
+		helm init --service-account tiller --history-max 200
+		kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml; \
 		kubectl apply -f deploy/config/tiller-clusterrolebinding.yaml; \
-		helm init --upgrade --service-account tiller
+		helm version
 
 .PHONY: install
 install:
