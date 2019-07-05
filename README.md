@@ -51,13 +51,13 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [x] Find to way to get VERSION to helm Values because tag ":latest" doesn't work
 - [x] Change to docker login `--password-stdi`
 - [ ] Replace NodePort by LoadBalancer
-- [ ] Deploy on DigitalOcean
 - [ ] Read more about Ingress
 - [ ] Replace LoadBalancer with Ingress
 - [ ] Debug go code inside docker container
 - [ ] Organise backend, frontend code and devops code
 - [ ] Add tests
-- [ ] Add Jenkins
+- [ ] Add Jenkins and/or [CircleCI](https://circleci.com/pricing/#build-linux)
+- [ ] Deploy on DigitalOcean
 - [ ] Find equivalent to package.json/requirements.txt for go
 - [ ] Write some doc about it
 - [ ] Add simple gotodo frontend
