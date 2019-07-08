@@ -58,7 +58,9 @@ func (s TodoService) TodoHander(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("content-type", "application/json")
-		w.Write(jsonTodos)
+		if _, err = w.Write(jsonTodos); err != nil {
+			log.Println(err)
+		}
 
 	case http.MethodPost:
 
@@ -93,7 +95,9 @@ func (s TodoService) TodoHander(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("content-type", "application/json")
-		w.Write(jsonTodo)
+		if _, err = w.Write(jsonTodo); err != nil {
+			log.Println(err)
+		}
 	}
 }
 
@@ -123,7 +127,9 @@ func (s TodoService) TodosByIDHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.Header().Set("content-type", "application/json")
-		w.Write(jsonTodo)
+		if _, err = w.Write(jsonTodo); err != nil {
+			log.Println(err)
+		}
 
 	case http.MethodPut:
 

@@ -66,8 +66,8 @@ func (s Storage) GetTodos() (*Todos, error) {
 	if err != nil {
 		return nil, err
 	}
-	var todos Todos
 
+	var todos Todos
 	for _, v := range todoList {
 		t, err := redis.Values(s.Conn.Do("hgetall", v))
 		if err != nil {
@@ -92,7 +92,7 @@ func (s Storage) GetTodoByID(id int) (*Todo, error) {
 	}
 	// Test me
 	if t == nil {
-		return nil, errors.New("Todo not found")
+		return nil, errors.New("todo not found")
 	}
 	var todo Todo
 	if err := redis.ScanStruct(t, &todo); err != nil {
@@ -111,8 +111,10 @@ func (s Storage) PostTodo(t Todo) error {
 	key := getTodoKey(t.ID)
 
 	// Keep track of all the todos
-	s.Conn.Send("sadd", "todos", key)
-
+	err := s.Conn.Send("sadd", "todos", key)
+	if err != nil {
+		return err
+	}
 	// Create a todo hash, redis-cli: todo:id text Hey completed false id someID
 	if _, err := s.Conn.Do("HMSET", redis.Args{}.Add(key).AddFlat(&t)...); err != nil {
 		return err
