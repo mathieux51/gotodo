@@ -57,11 +57,9 @@ func NewDB(dataSource string) (redis.Conn, error) {
 }
 
 // GetTodos ...
+// Should return the last 10 todos
+// or it should accept parameter to get a specific range
 func (s Storage) GetTodos() (*Todos, error) {
-	// ⚠️ Could be good to have an example with hscan to compare perfs
-
-	// Should return the last 10 todos
-	// or it should accept parameter to get a specific range
 	todoList, err := redis.Strings(s.Conn.Do("smembers", "todos"))
 	if err != nil {
 		return nil, err

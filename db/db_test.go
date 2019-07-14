@@ -59,3 +59,18 @@ func TestGetTodoKey(t *testing.T) {
 		t.Errorf("getTodoKey() = %v, got %v", want, got)
 	}
 }
+func TestGetTodos(t *testing.T) {
+	s, err := NewStorage()
+	if err != nil {
+		t.Fatal(err)
+	}
+	todos, err := s.GetTodos()
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := len(*todos)
+	want := 2
+	if got != want {
+		t.Errorf("getTodoKey() = %v, got %v", want, got)
+	}
+}
