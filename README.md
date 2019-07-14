@@ -50,6 +50,7 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 
 - [x] Find to way to get VERSION to helm Values because tag ":latest" doesn't work
 - [x] Change to docker login `--password-stdi`
+- [ ] Add CircleCI
 - [ ] Replace NodePort by LoadBalancer
 - [ ] Read more about Ingress
 - [ ] Replace LoadBalancer with Ingress
