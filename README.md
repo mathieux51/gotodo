@@ -52,6 +52,7 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [x] Change to docker login `--password-stdi`
 - [x] Add project to CircleCI
 - [ ] Read about CircleCI and Kubernetes
+- [ ] Do we have to use a cloud provider to use CircleCI with Kubernetes?
 - [ ] Add Redis to Kubernetes and CircleCI
 - [ ] Make sure the db (Redis) tests are passing
 - [ ] Replace NodePort by LoadBalancer
@@ -61,7 +62,7 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [ ] Organise backend, frontend code and devops code
 - [ ] Add tests
 - [ ] Add Jenkins and/or [CircleCI](https://circleci.com/pricing/#build-linux)
-- [ ] Deploy on DigitalOcean
+- [ ] Deploy on GCP
 - [ ] Find equivalent to package.json/requirements.txt for go
 - [ ] Write some doc about it
 - [ ] Add simple gotodo frontend
