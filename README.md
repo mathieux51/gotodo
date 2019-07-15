@@ -51,8 +51,9 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [x] Find to way to get VERSION to helm Values because tag ":latest" doesn't work
 - [x] Change to docker login `--password-stdi`
 - [x] Add project to CircleCI
-- [ ] Read about CircleCI and Kubernetes
-- [ ] Do we have to use a cloud provider to use CircleCI with Kubernetes?
+- [x] Read about CircleCI and Kubernetes
+- [x] Do we have to use a cloud provider to use CircleCI with Kubernetes? I don't think so
+- [ ] Create a cluster on CircleCi
 - [ ] Add Redis to Kubernetes and CircleCI
 - [ ] Make sure the db (Redis) tests are passing
 - [ ] Replace NodePort by LoadBalancer
