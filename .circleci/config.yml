@@ -21,6 +21,10 @@ jobs:
             curl -LO https://git.io/get_helm.sh
             chmod 700 get_helm.sh
             ./get_helm.sh
+      - run:
+          name: "Cluster info"
+          command: |
+            kubectl cluster-info
   # build:
   #   docker:
   #     # specify the version
