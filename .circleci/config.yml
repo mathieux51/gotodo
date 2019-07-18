@@ -24,7 +24,7 @@ jobs:
             curl -sSL "https://raw.githubusercontent.com/kubernetes/kubernetes/${RELEASE}/build/debs/kubelet.service" | sed "s:/usr/bin:/opt/bin:g" > /etc/systemd/system/kubelet.service
             sudo mkdir -p /etc/systemd/system/kubelet.service.d
             curl -sSL "https://raw.githubusercontent.com/kubernetes/kubernetes/${RELEASE}/build/debs/10-kubeadm.conf" | sed "s:/usr/bin:/opt/bin:g" > /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-            systemctl enable --now kubelet
+            sudo systemctl enable --now kubelet
 
       - run:
           name: "install helm"
