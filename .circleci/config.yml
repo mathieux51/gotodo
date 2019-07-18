@@ -12,10 +12,10 @@ jobs:
           command: |
             CNI_VERSION="v0.7.5"
             sudo mkdir -p /opt/cni/bin
-            curl -L "https://github.com/containernetworking/plugins/releases/download/${CNI_VERSION}/cni-plugins-amd64-${CNI_VERSION}.tgz" | tar -C /opt/cni/bin -xz 
+            curl -L "https://github.com/containernetworking/plugins/releases/download/${CNI_VERSION}/cni-plugins-amd64-${CNI_VERSION}.tgz" | sudo tar -C /opt/cni/bin -xz 
             CRICTL_VERSION="v1.12.0"
             sudo mkdir -p /opt/bin
-            curl -L "https://github.com/kubernetes-incubator/cri-tools/releases/download/${CRICTL_VERSION}/crictl-${CRICTL_VERSION}-linux-amd64.tar.gz" | tar -C /opt/bin -xz
+            curl -L "https://github.com/kubernetes-incubator/cri-tools/releases/download/${CRICTL_VERSION}/crictl-${CRICTL_VERSION}-linux-amd64.tar.gz" | sudo tar -C /opt/bin -xz
             RELEASE="$(curl -sSL https://dl.k8s.io/release/stable.txt)"
             sudo mkdir -p /opt/bin
             cd /opt/bin
@@ -24,7 +24,7 @@ jobs:
             curl -sSL "https://raw.githubusercontent.com/kubernetes/kubernetes/${RELEASE}/build/debs/kubelet.service" | sed "s:/usr/bin:/opt/bin:g" > /etc/systemd/system/kubelet.service
             sudo mkdir -p /etc/systemd/system/kubelet.service.d
             curl -sSL "https://raw.githubusercontent.com/kubernetes/kubernetes/${RELEASE}/build/debs/10-kubeadm.conf" | sed "s:/usr/bin:/opt/bin:g" > /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-            sudo systemctl enable --now kubelet
+            systemctl enable --now kubelet
 
       - run:
           name: "install helm"
