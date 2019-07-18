@@ -18,6 +18,7 @@ jobs:
             curl -L "https://github.com/kubernetes-incubator/cri-tools/releases/download/${CRICTL_VERSION}/crictl-${CRICTL_VERSION}-linux-amd64.tar.gz" | sudo tar -C /opt/bin -xz
             RELEASE="$(curl -sSL https://dl.k8s.io/release/stable.txt)"
             sudo mkdir -p /opt/bin
+            sudo chown -R $(whoami) /opt/bin
             cd /opt/bin
             curl -L --remote-name-all https://storage.googleapis.com/kubernetes-release/release/${RELEASE}/bin/linux/amd64/{kubeadm,kubelet,kubectl}
             # sudo chmod +x {kubeadm,kubelet,kubectl}
