@@ -3,10 +3,10 @@ orbs:
   helm: circleci/helm@0.1.2
   k8s: circleci/kubernetes@0.1.0
 commands:
-install:
-  description: "Install `gcloud` and `kubectl` if not already installed."
-  steps:
-    - k8s/install
+  install:
+    description: "Install `gcloud` and `kubectl` if not already installed."
+    steps:
+      - k8s/install
 jobs:
   build:
     machine: true
