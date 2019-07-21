@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   helm: circleci/helm@0.1.2
   k8s: circleci/kubernetes@0.1.0
+  gcp-gke: circleci/gcp-gke@0.2.0
 commands:
   install:
     description: "Install `kubectl` if not already installed."
