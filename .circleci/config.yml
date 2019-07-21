@@ -17,4 +17,4 @@ jobs:
           name: "Check kubetcl and helm versions"
           command: |
           kubectl --version
-          # helm --version
+          helm --version
