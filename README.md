@@ -55,11 +55,12 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [x] Do we have to use a cloud provider to use CircleCI with Kubernetes?
 - [x] Create gcp cluster
 - [x] Make sure the db (Redis) tests are passing
+- [ ] Connect to `gcp-cluster` by edit `~/.kube/config` file
 - [ ] Finish the two courses on Pluralsight
-- [ ] Connect to `gcp-cluster`
 - [ ] Deploy manually gotodo with helm
-- [ ] Setup CircleCi with Kubernetes
-- [ ] Run all tests (including the one with Redis) on CircleCI for a specific branch 
+- [ ] Setup k8s loadbalancer in helm chart and run `curl localhost:3001/todos`
+- [ ] Inject gcp variables into CircleCi
+- [ ] Run all tests (including the one with Redis) on CircleCI for a specific branch
 - [ ] Replace NodePort by LoadBalancer
 - [ ] Read more about Ingress
 - [ ] Replace LoadBalancer with Ingress
