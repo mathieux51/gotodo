@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   helm: circleci/helm@0.1.2
-  k8s: circleci/kubernetes@0.1.0
   gcp-gke: circleci/gcp-gke@0.2.0
 commands:
   install:
@@ -13,7 +12,8 @@ jobs:
     machine: true
     steps:
       - checkout
-      - install
+      - gcp-gke/install
+      - gcp-gke/init
       - run:
           name: "Check kubetcl and helm versions"
           command: |
