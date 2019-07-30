@@ -55,13 +55,21 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [x] Do we have to use a cloud provider to use CircleCI with Kubernetes?
 - [x] Create gcp cluster
 - [x] Make sure the db (Redis) tests are passing
-- [ ] Connect to `gcp-cluster` by edit `~/.kube/config` file
-- [ ] Finish the two courses on Pluralsight
-- [ ] Deploy manually gotodo with helm
-- [ ] Setup k8s loadbalancer in helm chart and run `curl localhost:3001/todos`
+- [x] Remove everything from `charts/values`, secret values should be in `.env` and the rest in the Makefile
+- [x] Change selectors
+- [x] Change docker image registry. Binary will be copied by CirclCI
+- [x] Connect to `gcp-cluster` by edit `~/.kube/config` file
+- [x] Setup k8s loadbalancer in helm chart and run `curl localhost:3001/todos`
+- [x] Run pod `kubectl exec -it gotodo-b6487675f-xtg2q /bin/sh` with `command: ["/bin/sh"]`, `tty: true` and `stdin: true`
+- [ ] Is `Chart.yaml` required?
+- [ ] clone, get deps, build, copy binary, exec binary
+- [ ] Fix CHART_NAME
 - [ ] Inject gcp variables into CircleCi
 - [ ] Run all tests (including the one with Redis) on CircleCI for a specific branch
-- [ ] Replace NodePort by LoadBalancer
+- [x] Replace NodePort by LoadBalancer
+- [ ] Finish the two courses on Pluralsight
+- [ ] Deploy manually gotodo with helm
+- [ ] In CircleCI dev branch should be deploy if tests pass, deploy to master should need a manuel approval
 - [ ] Read more about Ingress
 - [ ] Replace LoadBalancer with Ingress
 - [ ] Debug go code inside docker container

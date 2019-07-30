@@ -1,5 +1,8 @@
-name: gotodo-chart
-description: gotodo chart
+#
+# name: {{ .Values.CHART_NAME }}
+name: gotodo
+# description: {{ .Values.CHART_DESCRIPTION }}
+# version: {{ .Values.APP_VERSION }}
 version: 0.0.1
-sources:
-home:
+# sources:
+# home:

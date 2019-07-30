@@ -3,7 +3,7 @@ orbs:
   helm: circleci/helm@0.1.2
   gcp-gke: circleci/gcp-gke@0.2.0
 commands:
-  install:
+  k8s-install:
     description: "Install `kubectl` if not already installed."
     steps:
       - k8s/install
@@ -12,10 +12,20 @@ jobs:
     machine: true
     steps:
       - checkout
+      - k8s-install
       - gcp-gke/install
       - gcp-gke/init
-      - run:
-          name: "Check kubetcl and helm versions"
-          command: |
-            kubectl cluster-info
-            helm version
+      # - helm/init ⚠️
+      # - run:
+      #     name: "check kubetcl and helm versions"
+      #     command: |
+      #       kubectl cluster-info
+      #       helm version
+      # - run:
+      #     name: "helm install"
+      #     command: |
+      #       make install
+      # - run:
+      #     name: "go test"
+      #     command: |
+      #       make test

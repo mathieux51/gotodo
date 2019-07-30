@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: redis
+    service: redis
   name: redis
 spec:
   replicas: 1
@@ -11,11 +11,11 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: redis
+        service: redis
     spec:
       containers:
-        - image: {{ .Values.redisImage }}
+        - image: {{ .Values.REDIS_IMAGE }}
           name: redis
           ports:
-            - containerPort: {{ .Values.redisPort }}
+            - containerPort: {{ .Values.REDIS_PORT }}
       restartPolicy: Always

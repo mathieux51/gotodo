@@ -2,23 +2,25 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: gotodo
-  name: gotodo
+    service: APP_NAME
+  name: {{ .Values.APP_NAME }}
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        io.kompose.service: gotodo
+        service: {{ .Values.APP_NAME }}
     spec:
       containers:
         - env:
             - name: REDIS_HOST
               value: redis
-          image: {{ .Values.imageName }}
-          name: gotodo
+          image: {{ .Values.IMAGE_NAME }}
+          name: {{ .Values.APP_NAME }}
+          command: ["/bin/sh"]
+          tty: true
+          stdin: true
+          # command: ["./{{ .Values.BINARY_NAME }}"]
           ports:
-            - containerPort: 3001
+            - containerPort: {{ .Values.IMAGE_PORT }}
       restartPolicy: Always
-      imagePullSecrets:
-        - name: regcred

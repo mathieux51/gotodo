@@ -2,40 +2,12 @@
 include .env
 export
 
-DOCKER_IMAGE_VERSION=$(shell head -1 VERSION)
-IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(DOCKER_IMAGE_VERSION)
+# DOCKER_IMAGE_VERSION=$(shell head -1 VERSION)
+# IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(DOCKER_IMAGE_VERSION)
 
 .PHONY: clean
 clean: 
 		rm -rf main temp
-
-# Docker
-.PHONY: docker-login
-docker-login:
-		@echo $(DOCKER_REGISTRY_PWD) | docker login $(DOCKER_REGISTRY) -u $(DOCKER_ID) --password-stdin
-
-.PHONY: docker-build
-docker-build:
-		docker build --tag $(IMAGE_NAME) . 
-
-.PHONY: docker-run
-docker-run: 
-		docker run --rm -it --name $(REPOSITORY) $(IMAGE_NAME)
-
-.PHONY: docker-push
-docker-push:
-		docker push $(IMAGE_NAME)
-
-.PHONY: docker-pull
-docker-pull:
-		docker pull $(IMAGE_NAME)
-
-.PHONY: docker-update-version
-docker-update-version:
-	date '+%Y%m%d.%H%M.%S' > VERSION
-
-.PHONY: docker-update
-docker-update: docker-login docker-update-version docker-build docker-push
 
 # Go
 .PHONY: coverage
@@ -45,35 +17,49 @@ coverage:
 		go tool cover -html=temp/cover.out; \
 		rm -rf temp
 
-.PHONY: go-build
-go-build:
+.PHONY: test
+test:
+		go test ./...
+
+.PHONY: build
+build:
 		go build -o $(BINARY_NAME) -v cmd/main.go
+
+.PHONY: run
+run:
+		./$(BINARY_NAME)
 
 .PHONY: start
 start:
-		make go-build
-		./$(BINARY_NAME)
+		make build
+		make run
 
 # Kubernetes
-.PHONY: k8s-create-secret
-k8s-create-secret:
-		@kubectl create secret docker-registry regcred --docker-server=$(DOCKER_REGISTRY) --docker-username=$(DOCKER_ID) --docker-password=$(DOCKER_REGISTRY_PWD) -o yaml --dry-run > deploy/charts/templates/secret.yaml
-
-.PHONY: k8s-init
-k8s-init:
-		helm reset; \
-		make k8s-create-secret; \
-		helm init --service-account tiller --history-max 200
-		kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml; \
-		kubectl apply -f deploy/config/tiller-clusterrolebinding.yaml; \
+# helm init --service-account tiller --history-max 200 --upgrade --wait
+.PHONY: init-cluster
+init-cluster:
+		helm init --history-max 200 --upgrade --wait
 		helm version
 
-.PHONY: install
-install:
-		helm install --name $(RELEASE_NAME) \
-		--set imageName=$(IMAGE_NAME) \
+.PHONY: reset-tiller
+reset-tiller:
+		kubectl -n kube-system delete deployment tiller-deploy
+		kubectl -n kube-system delete service/tiller-deploy
+
+# Maybe it's possible to have some kind of a loop here 
+# with a comma separated list
+.PHONY: helm-install
+helm-install:
+		@helm install --name $(RELEASE_NAME) \
+		--set IMAGE_NAME=$(IMAGE_NAME) \
+		--set IMAGE_PORT=$(IMAGE_PORT) \
+		--set REDIS_IMAGE=$(REDIS_IMAGE) \
+		--set REDIS_PORT=$(REDIS_PORT) \
+		--set APP_NAME=$(APP_NAME) \
+		--set APP_VERSION=$(APP_VERSION) \
+		--set CHART_NAME=$(CHART_NAME) \
+		--set CHART_DESCRIPTION=$(CHART_DESCRIPTION) \
 		deploy/charts 
-# --dry-run --debug \
 		
 .PHONY: del
 del:
@@ -82,3 +68,37 @@ del:
 .PHONY: token
 token:
 		kubectl -n kube-system describe secret default
+
+.PHONY: dashboard
+dashboard:
+	export POD_NAME=$(kubectl get pods -n default -l "app=kubernetes-dashboard,release=foppish-wasp" -o jsonpath="{.items[0].metadata.name}"); \
+	echo https://127.0.0.1:8443/; \
+	kubectl -n default port-forward $(POD_NAME) 8443:8443
+
+# Docker
+# .PHONY: docker-login
+# docker-login:
+# 		@echo $(DOCKER_REGISTRY_PWD) | docker login $(DOCKER_REGISTRY) -u $(DOCKER_ID) --password-stdin
+
+# .PHONY: docker-build
+# docker-build:
+# 		docker build --tag $(IMAGE_NAME) . 
+
+# .PHONY: docker-run
+# docker-run: 
+# 		docker run --rm -it --name $(REPOSITORY) $(IMAGE_NAME)
+
+# .PHONY: docker-push
+# docker-push:
+# 		docker push $(IMAGE_NAME)
+
+# .PHONY: docker-pull
+# docker-pull:
+# 		docker pull $(IMAGE_NAME)
+
+# .PHONY: docker-update-version
+# docker-update-version:
+# 	date '+%Y%m%d.%H%M.%S' > VERSION
+
+# .PHONY: docker-update
+# docker-update: docker-login docker-update-version docker-build docker-push
