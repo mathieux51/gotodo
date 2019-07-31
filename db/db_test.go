@@ -26,7 +26,7 @@ func TestGetEnv_fallback(t *testing.T) {
 }
 
 func TestGetStorage(t *testing.T) {
-	s, err := NewStorage()
+	s, err := NewRedisStorage()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func TestGetStorage_err(t *testing.T) {
 	os.Setenv("REDIS_HOST", "foo")
 	defer os.Unsetenv("REDIS_HOST")
 
-	_, err := NewStorage()
+	_, err := NewRedisStorage()
 	if err == nil {
 		t.Fatal(err)
 		t.Error("GetStorage should return an error if REDIS_HOST invalid")
@@ -60,7 +60,7 @@ func TestGetTodoKey(t *testing.T) {
 	}
 }
 func TestGetTodos(t *testing.T) {
-	s, err := NewStorage()
+	s, err := NewRedisStorage()
 	if err != nil {
 		t.Fatal(err)
 	}

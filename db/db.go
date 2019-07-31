@@ -21,8 +21,8 @@ func getEnv(key, fallback string) string {
 	return fallback
 }
 
-// NewStorage ...
-func NewStorage() (*Storage, error) {
+// NewRedisStorage ...
+func NewRedisStorage() (*Storage, error) {
 	redisHost := getEnv("REDIS_HOST", "127.0.0.1")
 	redisURL := fmt.Sprintf("redis://%v:6379", redisHost)
 	conn, err := NewDB(redisURL)

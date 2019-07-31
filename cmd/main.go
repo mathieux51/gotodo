@@ -14,7 +14,7 @@ const port = "3001"
 
 func main() {
 	// Init storage
-	s, err := db.NewStorage()
+	s, err := db.NewRedisStorage()
 	if err != nil {
 		log.Fatal(err)
 	}
