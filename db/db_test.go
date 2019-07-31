@@ -69,7 +69,7 @@ func TestGetTodos(t *testing.T) {
 		t.Fatal(err)
 	}
 	got := len(*todos)
-	want := 2
+	want := 0
 	if got != want {
 		t.Errorf("getTodoKey() = %v, got %v", want, got)
 	}
