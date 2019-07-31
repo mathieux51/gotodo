@@ -1,20 +1,24 @@
 version: 2.1
-orbs:
-  helm: circleci/helm@0.1.2
-  gcp-gke: circleci/gcp-gke@0.2.0
+# orbs:
+#   helm: circleci/helm@0.1.2
+#   gcp-gke: circleci/gcp-gke@0.2.0
 commands:
-  k8s-install:
-    description: "Install `kubectl` if not already installed."
-    steps:
-      - k8s/install
+  # k8s-install:
+  #   description: "Install `kubectl` if not already installed."
+  #   steps:
+  #     - k8s/install
 jobs:
   build:
-    machine: true
+    docker:
+      - image: circleci/golang:1.12.7-alpine
+      - image: circleci/redis:alpine
     steps:
       - checkout
-      - k8s-install
-      - gcp-gke/install
-      - gcp-gke/init
+      - go get -v -t -d ./...
+      - go test ./...
+      # - k8s-install
+      # - gcp-gke/install
+      # - gcp-gke/init
       # - helm/init ⚠️
       # - run:
       #     name: "check kubetcl and helm versions"
