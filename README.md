@@ -62,9 +62,10 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [x] Setup k8s loadbalancer in helm chart and run `curl localhost:3001/todos`
 - [x] Run pod `kubectl exec -it gotodo-b6487675f-xtg2q /bin/sh` with `command: ["/bin/sh"]`, `tty: true` and `stdin: true`
 - [ ] Is `Chart.yaml` required?
-- [ ] clone, get deps, build, copy binary, exec binary
+- [ ] Add Jenkins and/or [CircleCI](https://circleci.com/pricing/#build-linux)
 - [ ] Fix CHART_NAME
 - [ ] Inject gcp variables into CircleCi
+- [ ] Deploy on GCP
 - [ ] Run all tests (including the one with Redis) on CircleCI for a specific branch
 - [x] Replace NodePort by LoadBalancer
 - [ ] Finish the two courses on Pluralsight
@@ -73,17 +74,15 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [ ] Read more about Ingress
 - [ ] Replace LoadBalancer with Ingress
 - [ ] Debug go code inside docker container
-- [ ] Organise backend, frontend code and devops code
-- [ ] Add tests
-- [ ] Add Jenkins and/or [CircleCI](https://circleci.com/pricing/#build-linux)
-- [ ] Deploy on GCP
-- [ ] Find equivalent to package.json/requirements.txt for go
+- [x] Add tests
 - [ ] Write some doc about it
-- [ ] Add simple gotodo frontend
+- [ ] Find equivalent to package.json/requirements.txt for go
 - [ ] Check auth
 - [ ] Oauth with google
 - [ ] session in Redis
 - [ ] Update memory profile commands
+- [ ] Add simple gotodo frontend
+- [ ] Organise backend, frontend code and devops code
 - [ ] Update frontend with [tailwindcss](https://tailwindcss.com/docs/controlling-file-size/#app)
 
 ## Coverage report
