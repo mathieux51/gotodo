@@ -10,7 +10,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.12.7-alpine
+      - image: circleci/golang:1.12.7
       - image: circleci/redis:alpine
     steps:
       - checkout
