@@ -62,11 +62,11 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [x] Setup k8s loadbalancer in helm chart and run `curl localhost:3001/todos`
 - [x] Run pod `kubectl exec -it gotodo-b6487675f-xtg2q /bin/sh` with `command: ["/bin/sh"]`, `tty: true` and `stdin: true`
 - [ ] Is `Chart.yaml` required?
-- [ ] Add Jenkins and/or [CircleCI](https://circleci.com/pricing/#build-linux)
+- [x] Add Jenkins and/or [CircleCI](https://circleci.com/pricing/#build-linux)
 - [ ] Fix CHART_NAME
 - [ ] Inject gcp variables into CircleCi
 - [ ] Deploy on GCP
-- [ ] Run all tests (including the one with Redis) on CircleCI for a specific branch
+- [x] Run all tests (including the one with Redis) on CircleCI for a specific branch
 - [x] Replace NodePort by LoadBalancer
 - [ ] Finish the two courses on Pluralsight
 - [ ] Deploy manually gotodo with helm
