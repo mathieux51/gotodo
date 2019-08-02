@@ -38,8 +38,9 @@ start:
 # helm init --service-account tiller --history-max 200 --upgrade --wait
 .PHONY: init-cluster
 init-cluster:
-		helm init --history-max 200 --upgrade --wait
-		helm version
+		kubectl create serviceaccount tiller --namespace kube-system
+		kubectl create clusterrolebinding tiller-admin-binding --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+		helm init --service-account=tiller --history-max=200 --wait
 
 .PHONY: reset-tiller
 reset-tiller:
