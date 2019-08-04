@@ -27,10 +27,9 @@ workflows:
   flow:
     jobs:
       - test
-      - build
+      - build:
         requires:
           - test
-
       # - k8s-install
       # - gcp-gke/install
       # - gcp-gke/init
