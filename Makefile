@@ -1,9 +1,29 @@
-# Import .env file and export all make variables as environment variables
-include .env
-export
+# docker
+DOCKER_ID ?= 
+DOCKER_REPOSITORY ?=
+DOCKER_REGISTRY ?= 
+DOCKER_REGISTRY_PWD ?= 
+IMAGE_NAME = golang:1.12.7-alpine
+IMAGE_PORT = 3001
+REDIS_NAME = redis
+REDIS_IMAGE = redis:alpine
+REDIS_PORT = 6379
+# kubernetes
+CLUSTER_NAME = gcp-cluster
+# helm
+CHART_NAME = gotodo
+CHART_DESCRIPTION = "chart description"
+# go
+BINARY_NAME = gotodo
+RELEASE_NAME = dev
+# app
+APP_NAME = gotodo
+APP_VERSION = 0.0.1
+
+
 
 # DOCKER_IMAGE_VERSION=$(shell head -1 VERSION)
-# IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(REPOSITORY):$(DOCKER_IMAGE_VERSION)
+# IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION)
 
 .PHONY: clean
 clean: 
@@ -91,7 +111,7 @@ dashboard:
 
 # .PHONY: docker-run
 # docker-run: 
-# 		docker run --rm -it --name $(REPOSITORY) $(IMAGE_NAME)
+# 		docker run --rm -it --name $(DOCKER_REPOSITORY) $(IMAGE_NAME)
 
 # .PHONY: docker-push
 # docker-push:
