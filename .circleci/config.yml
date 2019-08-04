@@ -8,6 +8,7 @@ jobs:
       - image: circleci/golang:1.12.7
     steps:
       - checkout
+      - run: make get
       - run: make build
   test:
     docker:
