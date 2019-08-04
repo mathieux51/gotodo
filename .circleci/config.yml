@@ -8,7 +8,7 @@ commands:
   #   steps:
   #     - k8s/install
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/golang:1.12.7
       - image: circleci/redis:alpine
@@ -16,6 +16,21 @@ jobs:
       - checkout
       - run: go get -v -t -d ./...
       - run: go test ./...
+  build:
+    docker:
+      - image: circleci/golang:1.12.7
+    steps:
+      - checkout
+      - run: make build
+workflows:
+  version: 2
+  flow:
+    jobs:
+      - test
+      - build
+        requires:
+          - test
+
       # - k8s-install
       # - gcp-gke/install
       # - gcp-gke/init
