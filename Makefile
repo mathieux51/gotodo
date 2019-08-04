@@ -42,7 +42,7 @@ test:
 		go test ./...
 
 .PHONY: get
-test:
+get:
 		go get -v -t -d ./...
 
 .PHONY: build
