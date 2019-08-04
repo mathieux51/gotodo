@@ -21,6 +21,10 @@ coverage:
 test:
 		go test ./...
 
+.PHONY: get
+test:
+		go get -v -t -d ./...
+
 .PHONY: build
 build:
 		go build -o $(BINARY_NAME) -v cmd/main.go

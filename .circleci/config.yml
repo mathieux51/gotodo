@@ -14,8 +14,8 @@ jobs:
       - image: circleci/redis:alpine
     steps:
       - checkout
-      - run: go get -v -t -d ./...
-      - run: go test ./...
+      - run: make get
+      - run: make test
   build:
     docker:
       - image: circleci/golang:1.12.7
@@ -24,7 +24,7 @@ jobs:
       - run: make build
 workflows:
   version: 2
-  flow:
+  test_and_build:
     jobs:
       - test
       - build:
