@@ -58,6 +58,11 @@ start:
 		make build
 		make run
 
+.PHONY: copy-build-artifacts
+copy-build-artifacts:
+		mkdir -p /tmp/artifacts
+		cp ./$(BINARY_NAME) /tmp/
+
 # Kubernetes
 # helm init --service-account tiller --history-max 200 --upgrade --wait
 .PHONY: init-cluster

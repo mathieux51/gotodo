@@ -3,13 +3,6 @@ version: 2.1
 #   helm: circleci/helm@0.1.2
 #   gcp-gke: circleci/gcp-gke@0.2.0
 jobs:
-  build:
-    docker:
-      - image: circleci/golang:1.12.7
-    steps:
-      - checkout
-      - run: make get
-      - run: make build
   test:
     docker:
       - image: circleci/golang:1.12.7
@@ -18,6 +11,21 @@ jobs:
       - checkout
       - run: make get
       - run: make test
+  build:
+    docker:
+      - image: circleci/golang:1.12.7
+    steps:
+      - checkout
+      - run: make get
+      - run: make build
+      - run: make copy-build-artifacts
+      - store_artifacts:
+          path: /tmp/artifacts
+
+# Persist binary
+# pull docker image
+# Copy binary in docker image
+# Make sure helm/k8s use this image + binary
 
 workflows:
   version: 2
