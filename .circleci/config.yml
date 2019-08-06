@@ -24,7 +24,12 @@ jobs:
 
 # Persist binary
 # pull docker image
-# Copy binary in docker image
+# Copy binary in docker image:
+#  - start the pod, let it crash and copy the binary
+#  - look at pre hooks so see if I can copy before it starts
+#  - mount a volumes between pod an CCI
+#  - copy the binary to some kind of volumes on the cluster
+#    and create a volumes between the pod and the volume
 # Make sure helm/k8s use this image + binary
 
 workflows:
