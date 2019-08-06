@@ -61,7 +61,7 @@ start:
 .PHONY: copy-build-artifacts
 copy-build-artifacts:
 		mkdir -p /tmp/artifacts
-		cp ./$(BINARY_NAME) /tmp/
+		cp ./$(BINARY_NAME) /tmp/artifacts
 
 # Kubernetes
 # helm init --service-account tiller --history-max 200 --upgrade --wait
