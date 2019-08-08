@@ -58,11 +58,6 @@ start:
 		make build
 		make run
 
-.PHONY: copy-build-artifacts
-copy-build-artifacts:
-		mkdir -p /tmp/artifacts
-		cp ./$(BINARY_NAME) /tmp/artifacts
-
 # Kubernetes
 # helm init --service-account tiller --history-max 200 --upgrade --wait
 .PHONY: init-cluster
@@ -76,6 +71,10 @@ reset-tiller:
 		kubectl -n kube-system delete deployment tiller-deploy
 		kubectl -n kube-system delete service/tiller-deploy
 
+.PHONY: create-binary-configmap
+create-binary-configmap:
+		kubectl create configmap $(APP_NAME) ./$(BINARY_NAME)
+		
 # Maybe it's possible to have some kind of a loop here 
 # with a comma separated list
 .PHONY: helm-install

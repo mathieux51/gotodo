@@ -1,7 +1,6 @@
 version: 2.1
-# orbs:
-#   helm: circleci/helm@0.1.2
-#   gcp-gke: circleci/gcp-gke@0.2.0
+orbs:
+  helm: circleci/helm@0.1.2
 jobs:
   test:
     docker:
@@ -10,27 +9,21 @@ jobs:
     steps:
       - checkout
       - run: make get
+      - run:
+          name: waiting for Redis to be ready
+          command: dockerize -wait tcp://localhost:6379 -timeout 1m
       - run: make test
-  build:
+  build_and_deploy:
     docker:
       - image: circleci/golang:1.12.7
     steps:
       - checkout
       - run: make get
       - run: make build
-      - run: make copy-build-artifacts
-      - store_artifacts:
-          path: /tmp/artifacts
 
-# Persist binary
-# pull docker image
-# Copy binary in docker image:
-#  - start the pod, let it crash and copy the binary
-#  - look at pre hooks so see if I can copy before it starts
-#  - mount a volumes between pod an CCI
-#  - copy the binary to some kind of volumes on the cluster
-#    and create a volumes between the pod and the volume
-# Make sure helm/k8s use this image + binary
+# connect to cluster
+# create configmap with binary
+# helm install
 
 workflows:
   version: 2
