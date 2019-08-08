@@ -12,11 +12,11 @@ spec:
         service: {{ .Values.APP_NAME }}
     spec:
       containers:
-        - env:
+        - name: {{ .Values.APP_NAME }}
+          image: {{ .Values.IMAGE_NAME }}
+          env:
             - name: REDIS_HOST
               value: redis
-          image: {{ .Values.IMAGE_NAME }}
-          name: {{ .Values.APP_NAME }}
           command: ["/bin/sh"]
           tty: true
           stdin: true
