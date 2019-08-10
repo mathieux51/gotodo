@@ -1,6 +1,6 @@
 # gotodo
 
-Simple todo list app. Stack:
+**Simple** todo list app. Stack:
 
 - Backend: Golang and Redis
 - Frontend: Sapper (Svelte)
