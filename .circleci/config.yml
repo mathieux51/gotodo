@@ -19,6 +19,7 @@ jobs:
       - checkout
       - run: make docker-login
       - run: make docker-build
+      - run: make docker-push
 
 # connect to cluster
 # create configmap with binary
