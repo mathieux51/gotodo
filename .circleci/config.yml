@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  helm: circleci/helm@0.1.3
+  helm: circleci/helm@0.1.2
 jobs:
   test:
     docker:
@@ -14,16 +14,18 @@ jobs:
           command: dockerize -wait tcp://localhost:6379 -timeout 1m
       - run: make test
   build_and_deploy:
-    docker:
-      - image: alpine/helm:2.14.0
+    machine: true
     steps:
       - checkout
-      - run: apk add --update --no-cache make=4.2.1-r2
+      - run: curl -LO https://git.io/get_helm.sh
+      - run: chmod 700 get_helm.sh
+      - run: ./get_helm.sh
       - run: make docker-build
       - run: make docker-login
       - run: make docker-push
       - run: make del 
       - run: make helm-install
+
 
 # connect to cluster
 # create configmap with binary
