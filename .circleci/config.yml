@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  helm: circleci/helm@0.1.2
+  helm: circleci/helm@0.1.3
 jobs:
   test:
     docker:
@@ -14,7 +14,8 @@ jobs:
           command: dockerize -wait tcp://localhost:6379 -timeout 1m
       - run: make test
   build_and_deploy:
-    machine: true
+    docker:
+      - image: circleci/helm:2.14.0
     steps:
       - checkout
       - run: make docker-build
