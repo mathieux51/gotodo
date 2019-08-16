@@ -1,3 +1,6 @@
+include .env
+export
+#
 # docker
 DOCKER_ID ?= 
 DOCKER_REPOSITORY ?=
@@ -9,7 +12,7 @@ REDIS_NAME = redis
 REDIS_IMAGE = redis:alpine
 REDIS_PORT = 6379
 # kubernetes
-CLUSTER_NAME = gcp-cluster
+CLUSTER_NAME ?= 
 # helm
 CHART_NAME = gotodo
 CHART_DESCRIPTION = "chart description"
@@ -19,8 +22,6 @@ RELEASE_NAME = dev
 # app
 APP_NAME = gotodo
 APP_VERSION = 0.0.1
-
-
 
 # DOCKER_IMAGE_VERSION=$(shell head -1 VERSION)
 # IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION)
@@ -105,29 +106,29 @@ dashboard:
 	kubectl -n default port-forward $(POD_NAME) 8443:8443
 
 # Docker
-# .PHONY: docker-login
-# docker-login:
-# 		@echo $(DOCKER_REGISTRY_PWD) | docker login $(DOCKER_REGISTRY) -u $(DOCKER_ID) --password-stdin
+.PHONY: docker-login
+docker-login:
+		@echo $(DOCKER_REGISTRY_PWD) | docker login $(DOCKER_REGISTRY) -u $(DOCKER_ID) --password-stdin
 
-# .PHONY: docker-build
-# docker-build:
-# 		docker build --tag $(IMAGE_NAME) . 
+.PHONY: docker-build
+docker-build:
+		docker build --tag $(IMAGE_NAME) . 
 
-# .PHONY: docker-run
-# docker-run: 
-# 		docker run --rm -it --name $(DOCKER_REPOSITORY) $(IMAGE_NAME)
+.PHONY: docker-run
+docker-run: 
+		docker run --rm -it --name $(DOCKER_REPOSITORY) $(IMAGE_NAME)
 
-# .PHONY: docker-push
-# docker-push:
-# 		docker push $(IMAGE_NAME)
+.PHONY: docker-push
+docker-push:
+		docker push $(IMAGE_NAME)
 
-# .PHONY: docker-pull
-# docker-pull:
-# 		docker pull $(IMAGE_NAME)
+.PHONY: docker-pull
+docker-pull:
+		docker pull $(IMAGE_NAME)
 
-# .PHONY: docker-update-version
-# docker-update-version:
-# 	date '+%Y%m%d.%H%M.%S' > VERSION
+.PHONY: docker-update-version
+docker-update-version:
+	date '+%Y%m%d.%H%M.%S' > VERSION
 
-# .PHONY: docker-update
-# docker-update: docker-login docker-update-version docker-build docker-push
+.PHONY: docker-update
+docker-update: docker-login docker-update-version docker-build docker-push

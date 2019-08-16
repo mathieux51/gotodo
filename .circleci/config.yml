@@ -4,7 +4,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: circleci/golang:1.12.7
+      - image: circleci/golang:1.12
       - image: circleci/redis:alpine
     steps:
       - checkout
@@ -15,11 +15,11 @@ jobs:
       - run: make test
   build_and_deploy:
     docker:
-      - image: circleci/golang:1.12.7
+      - image: circleci/golang:1.12
     steps:
       - checkout
-      - run: make get
-      - run: make build
+      - setup_remote_docker
+      - run: make docker-login
 
 # connect to cluster
 # create configmap with binary
