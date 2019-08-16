@@ -15,7 +15,7 @@ jobs:
       - run: make test
   build_and_deploy:
     docker:
-      - image: circleci/helm:2.14.0
+      - image: alpine/helm:2.14.0
     steps:
       - checkout
       - run: make docker-build
