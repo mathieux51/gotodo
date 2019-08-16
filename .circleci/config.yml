@@ -14,12 +14,11 @@ jobs:
           command: dockerize -wait tcp://localhost:6379 -timeout 1m
       - run: make test
   build_and_deploy:
-    docker:
-      - image: circleci/golang:1.12
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
       - run: make docker-login
+      - run: make docker-build
 
 # connect to cluster
 # create configmap with binary
