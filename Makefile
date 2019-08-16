@@ -73,10 +73,9 @@ reset-tiller:
 		kubectl -n kube-system delete deployment tiller-deploy
 		kubectl -n kube-system delete service/tiller-deploy
 
-.PHONY: create-binary-configmap
-create-binary-configmap:
-		kubectl create configmap $(APP_NAME) ./$(BINARY_NAME)
-		
+.PHONY: create-secret-docker-registry 
+create-secret-docker-registry:
+		kubectl create secret docker-registry registrycredentials --docker-server=$(DOCKER_REGISTRY) --docker-username=$(DOCKER_ID) --docker-password=$(DOCKER_REGISTRY_PWD) --docker-email=$(DOCKER_EMAIL)
 # Maybe it's possible to have some kind of a loop here 
 # with a comma separated list
 .PHONY: helm-install

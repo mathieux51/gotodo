@@ -20,6 +20,8 @@ jobs:
       - run: make docker-build
       - run: make docker-login
       - run: make docker-push
+      - run: make del 
+      - run: make helm-install
 
 # connect to cluster
 # create configmap with binary
