@@ -30,7 +30,13 @@ jobs:
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
           gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-      - run: helm install 
+      - run: |
+        curl -LO https://git.io/get_helm.sh
+        chmod 700 get_helm.sh
+        ./get_helm.sh
+      - run: |
+        apt-get update && apt-get install make
+      - run: make helm-install
 # connect to cluster
 # create configmap with binary
 # helm install
