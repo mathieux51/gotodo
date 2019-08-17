@@ -23,18 +23,14 @@ jobs:
   gcloud:
     docker:
       - image: google/cloud-sdk
+      - image: alpine/helm
     steps:
       - checkout
       - run: |
           echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
           gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
           gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-  install_next_release: 
-    docker:
-      - image: alpine/helm
-    steps:
-        - checkout
-        - run: helm install 
+      - run: helm install 
 # connect to cluster
 # create configmap with binary
 # helm install
