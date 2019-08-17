@@ -13,20 +13,27 @@ jobs:
           name: waiting for Redis to be ready
           command: dockerize -wait tcp://localhost:6379 -timeout 1m
       - run: make test
-  build_and_deploy:
+  build_and_push_docker_image:
     machine: true
     steps:
       - checkout
-      - run: curl -LO https://git.io/get_helm.sh
-      - run: chmod 700 get_helm.sh
-      - run: ./get_helm.sh
       - run: make docker-build
       - run: make docker-login
       - run: make docker-push
-      - run: make del 
-      - run: make helm-install
-
-
+  gcloud:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - run: |
+          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+  install_next_release: 
+    docker:
+      - image: alpine/helm
+    steps:
+        - checkout
+        - run: helm install 
 # connect to cluster
 # create configmap with binary
 # helm install
@@ -36,6 +43,9 @@ workflows:
   build:
     jobs:
       - test
-      - build_and_deploy:
+      - build_and_push_docker_image:
           requires:
             - test
+      - gcloud: 
+          requires: 
+            - build_and_push_docker_image

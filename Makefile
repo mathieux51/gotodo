@@ -13,9 +13,6 @@ REDIS_IMAGE = redis:alpine
 REDIS_PORT = 6379
 # kubernetes
 CLUSTER_NAME ?= 
-# helm
-CHART_NAME = gotodo
-CHART_DESCRIPTION = "chart description"
 # go
 BINARY_NAME = gotodo
 RELEASE_NAME = dev
@@ -132,3 +129,4 @@ docker-update-version:
 
 .PHONY: docker-update
 docker-update: docker-login docker-update-version docker-build docker-push
+
