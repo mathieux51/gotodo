@@ -12,7 +12,10 @@ REDIS_NAME = redis
 REDIS_IMAGE = redis:alpine
 REDIS_PORT = 6379
 # kubernetes
-CLUSTER_NAME ?= 
+CLUSTER_NAME ?=
+GCLOUD_SERVICE_KEY ?=
+GOOGLE_COMPUTE_ZONE ?=
+GOOGLE_PROJECT_ID ?=
 # go
 BINARY_NAME = gotodo
 RELEASE_NAME = dev
@@ -76,8 +79,8 @@ create-secret-docker-registry:
 
 .PHONY: gcloud-get-credentials
 gcloud-get-credentials:
-		@echo "$(GCLOUD_SERVICE_KEY)" | gcloud auth activate-service-account --key-file=-
-		@gcloud container clusters get-credentials $(CLUSTER_NAME) --zone $(GCLOUD_ZONE)  --project $(GCLOUD_PROJECT) 
+		gcloud auth activate-service-account --key-file=$(GCLOUD_SERVICE_KEY)
+		gcloud container clusters get-credentials $(CLUSTER_NAME) --zone $(GOOGLE_COMPUTE_ZONE)  --project $(GOOGLE_PROJECT_ID) 
 	 
 # Maybe it's possible to have some kind of a loop here 
 # with a comma separated list
