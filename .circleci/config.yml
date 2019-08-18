@@ -1,6 +1,8 @@
 version: 2.1
 orbs:
   helm: circleci/helm@0.1.2
+  kube-orb: circleci/kubernetes@1.0.0
+  gcp-cli: circleci/gcp-cli@1.0.0
 jobs:
   test:
     docker:
@@ -20,25 +22,15 @@ jobs:
       - run: make docker-build
       - run: make docker-login
       - run: make docker-push
-  gcloud:
-    docker:
-      - image: google/cloud-sdk
-      - image: alpine/helm
+  deploy:
+    machine: true
     steps:
       - checkout
-      - run: |
-          echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-          gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-          gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-      - run: |
-          curl -LO https://git.io/get_helm.sh
-          chmod 700 get_helm.sh
-          ./get_helm.sh
-      - run: apt-get update && apt-get install make
-      - run: make helm-install
-# connect to cluster
-# create configmap with binary
-# helm install
+      - kube-orb/install
+      - gcp-cli/install_and_initialize_cli
+
+# I need: 
+# - gcloud, kubectl and helm
 
 workflows:
   version: 2
