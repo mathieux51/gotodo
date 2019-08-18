@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   helm: circleci/helm@0.1.2
-  kube-orb: circleci/kubernetes@1.0.0
+  kubernetes: circleci/kubernetes@0.3.0
   gcp-cli: circleci/gcp-cli@1.0.0
 jobs:
   test:
