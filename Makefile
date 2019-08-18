@@ -76,8 +76,8 @@ create-secret-docker-registry:
 
 .PHONY: gcloud-get-credentials
 gcloud-get-credentials:
-		echo $(GCLOUD_SERVICE_KEY) | gcloud auth activate-service-account --key-file=-
-		gcloud container clusters get-credentials $(CLUSTER_NAME) --zone $(GCLOUD_ZONE)  --project $(GCLOUD_PROJECT) 
+		@echo "$(GCLOUD_SERVICE_KEY)" | gcloud auth activate-service-account --key-file=-
+		@gcloud container clusters get-credentials $(CLUSTER_NAME) --zone $(GCLOUD_ZONE)  --project $(GCLOUD_PROJECT) 
 	 
 # Maybe it's possible to have some kind of a loop here 
 # with a comma separated list
