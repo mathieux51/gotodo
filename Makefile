@@ -73,6 +73,12 @@ reset-tiller:
 .PHONY: create-secret-docker-registry 
 create-secret-docker-registry:
 		kubectl create secret docker-registry registrycredentials --docker-server=$(DOCKER_REGISTRY) --docker-username=$(DOCKER_ID) --docker-password=$(DOCKER_REGISTRY_PWD) --docker-email=$(DOCKER_EMAIL)
+
+.PHONY: gcloud-get-credentials
+gcloud-get-credentials:
+		echo $(GCLOUD_SERVICE_KEY) | gcloud auth activate-service-account --key-file=-
+		gcloud container clusters get-credentials $(CLUSTER_NAME) --zone $(GCLOUD_ZONE)  --project $(GCLOUD_PROJECT) 
+	 
 # Maybe it's possible to have some kind of a loop here 
 # with a comma separated list
 .PHONY: helm-install
