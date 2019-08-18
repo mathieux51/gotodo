@@ -26,7 +26,7 @@ jobs:
     machine: true
     steps:
       - checkout
-      - kube-orb/install
+      - kubernetes/install
       - gcp-cli/install_and_initialize_cli
 
 workflows:
