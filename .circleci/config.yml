@@ -23,8 +23,8 @@ jobs:
       - checkout
       - kubernetes/install
       - helm/install-helm-client
-      - run: echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-      - run: gcloud container clusters get-credentials gcp-cluster --zone europe-west3-a --project gotodo-247409
+      - run: make gcloud-get-credentials   
+      - run: make helm-install
 
 version: 2.1
 orbs:
