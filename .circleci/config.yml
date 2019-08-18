@@ -29,9 +29,6 @@ jobs:
       - kube-orb/install
       - gcp-cli/install_and_initialize_cli
 
-# I need: 
-# - gcloud, kubectl and helm
-
 workflows:
   version: 2
   build:
@@ -40,6 +37,6 @@ workflows:
       - build_and_push_docker_image:
           requires:
             - test
-      - gcloud: 
+      - deploy: 
           requires: 
             - build_and_push_docker_image
