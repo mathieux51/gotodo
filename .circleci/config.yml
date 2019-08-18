@@ -21,11 +21,12 @@ jobs:
     machine: true
     steps:
       - checkout
+      # - kube-orb/install
 
 version: 2.1
 orbs:
   helm: circleci/helm@0.1.2
-  kubernetes: circleci/kubernetes@0.3.0
+  kube-orb: circleci/kubernetes@1.0.0
   gcp-cli: circleci/gcp-cli@1.8.2
 workflows:
   version: 2
@@ -40,5 +41,4 @@ workflows:
       - deploy: 
           requires: 
             - build_and_push_docker_image
-            - kubernetes/install
             - gcp-cli/install_and_initialize_cli
