@@ -17,14 +17,14 @@ jobs:
       - run: make docker-build
       - run: make docker-login
       - run: make docker-push
-  deploy:
-    machine: true
-    steps:
-      - checkout
-      - kubernetes/install
-      - helm/install-helm-client
-      - run: make gcloud-get-credentials   
-      - run: make helm-install
+  # deploy:
+  #   machine: true
+  #   steps:
+  #     - checkout
+  #     - kubernetes/install
+  #     - helm/install-helm-client
+  #     - run: make   
+  #     - run: make helm-install
 
 version: 2.1
 orbs:
@@ -39,8 +39,8 @@ workflows:
       - build_and_push_docker_image:
           requires:
             - test
-      - gcp-cli/install_and_initialize_cli
-      - deploy: 
-          requires: 
-            - build_and_push_docker_image
-            - gcp-cli/install_and_initialize_cli
+      # - gcp-cli/install_and_initialize_cli
+      # - deploy: 
+      #     requires: 
+      #       - build_and_push_docker_image
+      #       - gcp-cli/install_and_initialize_cli
