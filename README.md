@@ -98,3 +98,56 @@ go test -memprofilerate 1 -memprofile temp/mem.out ./model
 # Get model from ...
 go tool pprof -web temp/model.a temp/mem.out
 ```
+
+## Shut idle pods down 
+
+[source](https://carlosbecker.com/posts/k8s-sandbox-costs)
+
+```sh
+#!/bin/bash
+set -eo pipefail
+
+ingress="$(kubectl get pods --output=jsonpath='{.items[*].metadata.name}' |
+  xargs -n1 | grep "ingress-nginx" | head -n1)"
+
+# cache all hosts that pass through the ingress
+hosts="$(kubectl get ingress nginx-ingress \
+  --output=jsonpath='{.spec.rules[*].host}' | xargs -n1)"
+
+# cache pods
+pods="$(kubectl get pods)"
+
+# cache ingress logs of the last 90min
+logs="$(kubectl logs --since=90m "$ingress")"
+
+# iterate over all deployments
+kubectl get deployment --output=jsonpath='{.items[*].metadata.name}' |
+  xargs -n1 |
+  while read -r svc; do
+
+    # skip svc that don't have pods running
+    echo "$pods" | grep -q "$svc" || {
+      echo "$svc: no pods running"
+      continue
+    }
+
+    # skip svcs that don't pass through the ingress
+    echo "$hosts" | grep -q "$svc" ||  {
+      echo "$svc: not passing through ingress"
+      continue
+    }
+
+    # skip svcs with pods running less than 1h
+    echo "$pods" | grep "$svc" | awk '{print $5}' | grep -q h ||  {
+      echo "$svc: pod running less than 1h"
+      continue
+    }
+
+    # check if any traffic to that svc was made through the ingress in the
+    # last hour, scale it down case none
+    echo "$logs" | grep -q "default-$svc" || {
+      echo "$svc: scaling down"
+      kubectl scale deployments "$svc" --replicas 0 --record || true
+    }
+  done
+  ```
