@@ -21,11 +21,8 @@ BINARY_NAME = gotodo
 RELEASE_NAME = dev
 # app
 APP_NAME = gotodo
-APP_VERSION = 0.0.1
-
-# DOCKER_IMAGE_VERSION=$(shell head -1 VERSION)
-# IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION)
-IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(DOCKER_REPOSITORY):latest
+VERSION = $(shell head -1 VERSION)
+IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(APP_NAME)
 
 .PHONY: clean
 clean: 
@@ -92,7 +89,6 @@ helm-install:
 		--set REDIS_IMAGE=$(REDIS_IMAGE) \
 		--set REDIS_PORT=$(REDIS_PORT) \
 		--set APP_NAME=$(APP_NAME) \
-		--set APP_VERSION=$(APP_VERSION) \
 		--set CHART_NAME=$(CHART_NAME) \
 		--set CHART_DESCRIPTION=$(CHART_DESCRIPTION) \
 		deploy/charts 
@@ -122,20 +118,21 @@ docker-build:
 
 .PHONY: docker-run
 docker-run: 
-		docker run --rm -it --name $(DOCKER_REPOSITORY) $(IMAGE_NAME)
+		docker run --rm -it --name $(DOCKER_REPOSITORY) $(IMAGE_NAME):$(VERSION)
 
 .PHONY: docker-push
 docker-push:
-		docker push $(IMAGE_NAME)
+		docker push $(IMAGE_NAME):$(VERSION)
 
 .PHONY: docker-pull
 docker-pull:
-		docker pull $(IMAGE_NAME)
+		docker pull $(IMAGE_NAME):$(VERSION)
 
-.PHONY: docker-update-version
-docker-update-version:
-	date '+%Y%m%d.%H%M.%S' > VERSION
+.PHONY: docker-tag
+docker-tag:
+	@echo '$(shell docker inspect --format='{{index .Id}}' $(IMAGE_NAME) | awk '{split($$0, a, ":"); print a[2]}')' > VERSION; \
+	docker tag $(IMAGE_NAME):latest '$(IMAGE_NAME):$(shell head -1 VERSION)'
 
 .PHONY: docker-update
-docker-update: docker-login docker-update-version docker-build docker-push
+docker-update: docker-build docker-tag docker-push
 
