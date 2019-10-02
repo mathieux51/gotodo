@@ -85,6 +85,7 @@ gcloud-get-credentials:
 helm-install:
 		@helm install --name $(RELEASE_NAME) \
 		--set IMAGE_NAME=$(IMAGE_NAME) \
+		--set VERSION=$(VERSION) \
 		--set IMAGE_PORT=$(IMAGE_PORT) \
 		--set REDIS_IMAGE=$(REDIS_IMAGE) \
 		--set REDIS_PORT=$(REDIS_PORT) \
