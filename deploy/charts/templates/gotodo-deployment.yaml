@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.APP_NAME }}
-          image: {{ .Values.IMAGE_NAME }}
+          image: {{ .Values.IMAGE_NAME }}:{{ .Values.VERSION }}
           env:
             - name: REDIS_HOST
               value: redis
