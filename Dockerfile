@@ -7,5 +7,11 @@ RUN set -ex \
   && apk add \
     make
 
-COPY . .
+RUN mkdir -p gotodo
+
+COPY . ./gotodo
+
+WORKDIR gotodo
+
+RUN go build -o gotodo cmd/main.go
 
