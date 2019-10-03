@@ -17,7 +17,7 @@ spec:
           env:
             - name: REDIS_HOST
               value: redis
-          # command: ["/bin/sh"]
+          command: ["./gotodo/gotodo"]
           # tty: true
           # stdin: true
           command: ["./{{ .Values.BINARY_NAME }}"]

@@ -129,11 +129,18 @@ docker-push:
 docker-pull:
 		docker pull $(IMAGE_NAME):$(VERSION)
 
+.PHONY: docker-version
+docker-version:
+	echo $(shell docker inspect --format='{{index .Id}}' $(IMAGE_NAME) | awk '{split($$0, a, ":"); print a[2]}') > VERSION
+
 .PHONY: docker-tag
 docker-tag:
-	@echo '$(shell docker inspect --format='{{index .Id}}' $(IMAGE_NAME) | awk '{split($$0, a, ":"); print a[2]}')' > VERSION; \
-	docker tag $(IMAGE_NAME):latest '$(IMAGE_NAME):$(shell head -1 VERSION)'
+	docker tag $(IMAGE_NAME):latest $(IMAGE_NAME):$(VERSION)
+	docker rmi $(IMAGE_NAME):latest # remove the tag
+
+.PHONY: docker-update-version
+docker-update-version: docker-version docker-tag
 
 .PHONY: docker-update
-docker-update: docker-build docker-tag docker-push
+docker-update: docker-build docker-update-version docker-push
 
