@@ -17,10 +17,9 @@ spec:
           env:
             - name: REDIS_HOST
               value: redis
-          command: ["./gotodo/gotodo"]
           # tty: true
           # stdin: true
-          command: ["./{{ .Values.BINARY_NAME }}"]
+          command: ["/go/gotodo/{{ .Values.BINARY_NAME }}"]
           ports:
             - containerPort: {{ .Values.IMAGE_PORT }}
       imagePullSecrets:

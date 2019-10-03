@@ -17,3 +17,5 @@ WORKDIR gotodo
 
 RUN go build -o gotodo cmd/main.go
 
+RUN chmod +x ./gotodo 
+# ENTRYPOINT ["/.sh"]

@@ -90,6 +90,7 @@ helm-install:
 		--set REDIS_IMAGE=$(REDIS_IMAGE) \
 		--set REDIS_PORT=$(REDIS_PORT) \
 		--set APP_NAME=$(APP_NAME) \
+		--set BINARY_NAME=$(BINARY_NAME) \
 		--set CHART_NAME=$(CHART_NAME) \
 		--set CHART_DESCRIPTION=$(CHART_DESCRIPTION) \
 		deploy/charts 
