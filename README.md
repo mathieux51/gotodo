@@ -3,7 +3,6 @@
 **Simple** todo list app. Stack:
 
 - Backend: Golang and Redis
-- Frontend: Sapper (Svelte)
 
 ## Getting started
 
@@ -63,18 +62,15 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [x] Run pod `kubectl exec -it gotodo-b6487675f-xtg2q /bin/sh` with `command: ["/bin/sh"]`, `tty: true` and `stdin: true`
 - [ ] Is `Chart.yaml` required?
 - [x] Add Jenkins and/or [CircleCI](https://circleci.com/pricing/#build-linux)
-- [ ] Fix CHART_NAME
-- [ ] Inject gcp variables into CircleCi
-- [ ] Deploy on GCP
+- [x] Fix CHART_NAME
+- [x] Deploy on GCP
 - [x] Run all tests (including the one with Redis) on CircleCI for a specific branch
 - [x] Replace NodePort by LoadBalancer
-- [ ] Finish the two courses on Pluralsight
-- [ ] Deploy manually gotodo with helm
-- [ ] In CircleCI dev branch should be deploy if tests pass, deploy to master should need a manuel approval
+- [x] Deploy manually gotodo with helm
+- [x] Add tests
 - [ ] Read more about Ingress
 - [ ] Replace LoadBalancer with Ingress
 - [ ] Debug go code inside docker container
-- [x] Add tests
 - [ ] Write some doc about it
 - [ ] Find equivalent to package.json/requirements.txt for go
 - [ ] Check auth
@@ -99,7 +95,7 @@ go test -memprofilerate 1 -memprofile temp/mem.out ./model
 go tool pprof -web temp/model.a temp/mem.out
 ```
 
-## Shut idle pods down 
+## TODO: Shut idle pods down 
 
 [source](https://carlosbecker.com/posts/k8s-sandbox-costs)
 
