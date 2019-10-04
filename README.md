@@ -1,9 +1,5 @@
 # gotodo
 
-**Simple** todo list app. Stack:
-
-- Backend: Golang and Redis
-
 ## Getting started
 
 ```sh
