@@ -100,11 +100,11 @@ del:
 
 .PHONY: token
 token:
-		kubectl -n kube-system describe secret default
+		@sh scripts/token.sh
 
 .PHONY: dashboard
 dashboard:
-		sh scripts/dashboard.sh
+		@sh scripts/dashboard.sh
 
 # Docker
 .PHONY: docker-login
