@@ -22,12 +22,6 @@ This command will ask for loging, bump the version, build the new docker image a
 
 ## Kubernetes
 
-```
-# If `Error: could not find tiller` run:
-kubectl -n kube-system delete deployment tiller-deploy
-kubectl -n kube-system delete service/tiller-deploy
-```
-
 # WIP
 
 - [x] v2 with [redis](https://godoc.org/github.com/gomodule/redigo/redis)
