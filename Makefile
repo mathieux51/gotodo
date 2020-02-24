@@ -2,8 +2,11 @@
 export
 #
 # docker
+# ID to login to docker
 DOCKER_ID ?= 
+# name of the docker image in the registry
 DOCKER_REPOSITORY ?=
+# remote server where the docker image is stored
 DOCKER_REGISTRY ?= 
 DOCKER_REGISTRY_PWD ?= 
 IMAGE_NAME = golang:1.12.7-alpine
@@ -61,17 +64,11 @@ start:
 		make run
 
 # Kubernetes
-# helm init --service-account tiller --history-max 200 --upgrade --wait
-.PHONY: init-cluster
-init-cluster:
-		kubectl create serviceaccount tiller --namespace kube-system
-		kubectl create clusterrolebinding tiller-admin-binding --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-		helm init --service-account=tiller --history-max=200 --wait
 
-.PHONY: reset-tiller
-reset-tiller:
-		kubectl -n kube-system delete deployment tiller-deploy
-		kubectl -n kube-system delete service/tiller-deploy
+.PHONY: init-cluster
+init-cluster: 
+		helm install vault ./deploy/vault-helm-0.4.0	
+		helm install stable/kubernetes-dashboard
 
 .PHONY: create-secret-docker-registry 
 create-secret-docker-registry:
@@ -107,9 +104,7 @@ token:
 
 .PHONY: dashboard
 dashboard:
-	export POD_NAME=$(kubectl get pods -n default -l "app=kubernetes-dashboard,release=foppish-wasp" -o jsonpath="{.items[0].metadata.name}"); \
-	echo https://127.0.0.1:8443/; \
-	kubectl -n default port-forward $(POD_NAME) 8443:8443
+		sh scripts/dashboard.sh
 
 # Docker
 .PHONY: docker-login
