@@ -10,21 +10,21 @@ jobs:
           name: waiting for Redis to be ready
           command: dockerize -wait tcp://localhost:6379 -timeout 1m
       - run: make test
-  build_and_push_docker_image:
-    machine: true
-    steps:
-      - checkout
-      - run: make docker-build
-      - run: make docker-login
-      - run: make docker-push
-  # deploy:
-  #   machine: true
-  #   steps:
-  #     - checkout
-  #     - kubernetes/install
-  #     - helm/install-helm-client
-  #     - run: make   
-  #     - run: make helm-install
+# build_and_push_docker_image:
+#   machine: true
+#   steps:
+#     - checkout
+#     - run: make docker-build
+#     - run: make docker-login
+#     - run: make docker-push
+# deploy:
+#   machine: true
+#   steps:
+#     - checkout
+#     - kubernetes/install
+#     - helm/install-helm-client
+#     - run: make   
+#     - run: make helm-install
 
 version: 2.1
 orbs:
@@ -36,11 +36,3 @@ workflows:
   build:
     jobs:
       - test
-      - build_and_push_docker_image:
-          requires:
-            - test
-      # - gcp-cli/install_and_initialize_cli
-      # - deploy: 
-      #     requires: 
-      #       - build_and_push_docker_image
-      #       - gcp-cli/install_and_initialize_cli
