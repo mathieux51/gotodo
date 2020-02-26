@@ -68,17 +68,19 @@ start:
 .PHONY: init-cluster
 init-cluster: 
 		helm install vault ./deploy/vault-helm-0.4.0	
-		helm install stable/kubernetes-dashboard
+		helm install kubernetes-dashboard stable/kubernetes-dashboard
+
+.PHONY: reset 
+reset:
+		helm uninstall kubernetes-dashboard
+		helm uninstall vault
+		kubectl delete persistentvolumeclaims data-vault-0
+
 
 .PHONY: create-secret-docker-registry 
 create-secret-docker-registry:
 		kubectl create secret docker-registry registrycredentials --docker-server=$(DOCKER_REGISTRY) --docker-username=$(DOCKER_ID) --docker-password=$(DOCKER_REGISTRY_PWD) --docker-email=$(DOCKER_EMAIL)
 
-.PHONY: gcloud-get-credentials
-gcloud-get-credentials:
-		echo $(GCLOUD_SERVICE_KEY) | gcloud auth activate-service-account --key-file=-
-		gcloud container clusters get-credentials $(CLUSTER_NAME) --zone $(GOOGLE_COMPUTE_ZONE)  --project $(GOOGLE_PROJECT_ID) 
-	 
 # Maybe it's possible to have some kind of a loop here 
 # with a comma separated list
 .PHONY: helm-install
@@ -105,6 +107,11 @@ token:
 .PHONY: dashboard
 dashboard:
 		@sh scripts/dashboard.sh
+
+
+.PHONY: vault-ui 
+vault-ui:
+		@kubectl port-forward vault-0 8200:8200
 
 # Docker
 .PHONY: docker-login
