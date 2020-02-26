@@ -5,12 +5,14 @@ jobs:
       - image: circleci/redis:alpine
     steps:
       - checkout
+      - run:
+          name: printenv 
+          command: printenv 
       - run: make get
       - run:
           name: waiting for Redis to be ready
           command: dockerize -wait tcp://localhost:6379 -timeout 1m
       - run: 
-          printenv
           make test
 
 # build_and_push_docker_image:
