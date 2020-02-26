@@ -150,27 +150,32 @@ kubectl get deployment --output=jsonpath='{.items[*].metadata.name}' |
 ## Vault
 
 ```
-$ helm install vault ./deploy/vault-helm-0.4.0
-$ kubectl exec -it vault-0 vault operator init
-Unseal Key 1: WJpOAvYrYpDLHJYAnoXuAygOjHipKK9ofQO6PQas+Lxu
-Unseal Key 2: FwzYk+MnSkHXah6wtv1MVQXdxct8UNci+PdyFofCh1rA
-Unseal Key 3: WgDsBPv4cpO1nIXGnSmLBN8PvMnJyHWjr3UQZUzGfww1
-Unseal Key 4: 5Zr90uMzkr0Vjd5EsqclXM3EHstjV6deD37SvIixTLiL
-Unseal Key 5: Gw6d/Z5EPoc76e1wActlSSdeYoeVR/MuBKeCD1uu8zKU
+$ kubectl exec -it vault-0 sh
+/ $ vault operator init -n 1 -t 1
+Unseal Key 1: uFaAR6AsAgYL2f0wm9FdmTBzn/y5WpEYIDNwts6z4ro=
 
-Initial Root Token: s.uYdBpB3w34QWqM22LomVT0zI
+Initial Root Token: s.6dFIKedAWGVTwRyWMcwQ0kWa
 
-Vault initialized with 5 key shares and a key threshold of 3. Please securely
+Vault initialized with 1 key shares and a key threshold of 1. Please securely
 distribute the key shares printed above. When the Vault is re-sealed,
-restarted, or stopped, you must supply at least 3 of these keys to unseal it
+restarted, or stopped, you must supply at least 1 of these keys to unseal it
 before it can start servicing requests.
 
-Vault does not store the generated master key. Without at least 3 key to
+Vault does not store the generated master key. Without at least 1 key to
 reconstruct the master key, Vault will remain permanently sealed!
 
 It is possible to generate new unseal keys, provided you have a quorum of
 existing unseal keys shares. See "vault operator rekey" for more information.
-
-$ kubectl exec -it vault-0 vault operator unseal 
-WJpOAvYrYpDLHJYAnoXuAygOjHipKK9ofQO6PQas+Lxu
+/ $ vault operator unseal uFaAR6AsAgYL2f0wm9FdmTBzn/y5WpEYIDNwts6z4ro=
+Key             Value
+---             -----
+Seal Type       shamir
+Initialized     true
+Sealed          false
+Total Shares    1
+Threshold       1
+Version         1.3.2
+Cluster Name    vault-cluster-9fc2c848
+Cluster ID      d32ff548-e6a6-33f5-5b70-d466ea300b2a
+HA Enabled      false
 ```
