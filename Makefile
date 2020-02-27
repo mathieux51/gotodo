@@ -110,9 +110,9 @@ del:
 dashboard-token:
 		@sh scripts/dashboard-token.sh
 
-.PHONY: dashboard
-dashboard:
-		@sh scripts/dashboard.sh
+.PHONY: dashboard-ui
+dashboard-ui:
+		@sh scripts/dashboard-ui.sh
 
 
 .PHONY: vault-ui 
