@@ -3,13 +3,45 @@
 **Simple** todo list app. Stack:
 
 - Backend: Golang and Redis
-- Frontend: Sapper (Svelte)
+- Frontend: Svelte with Sapper (not built yet)
+- Platform: auto deployements with CircleCI, Vault, Kubernetes and Docker.
 
 ## Getting started
 
-```sh
-touch .env
-make start
+### Requirements
+
+```
+brew install vault
+```
+
+### Vault, Github and Circle
+
+To get started we need to setup Vault and CircleCI (CCI). CCI is using Vault so
+we need to configure it. For now with CCI we are using a project token but we
+might change to a personal token approach in the future. Let's first configure
+the Vault. Go to [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new) and create a vault token:
+
+```
+ - [] admin:org Full control of orgs and teams, read and write org projects
+    - [] write:org Read and write org and team membership, read and write org projects
+    - [x] read:org Read org and team membership, read org projects
+```
+
+Copy your token and login to Vault with your token by running
+
+```
+make vaut-login
+```
+
+
+## CircleCI
+
+```
+curl \
+  --header "Content-Type: application/json" \
+  --data '{"build_parameters": {"param1": "value1", "param2": 500}}' \
+  --request POST \
+  https://circleci.com/api/v1.1/project/github/circleci/mongofinil/tree/master?circle-token=$CIRCLE_TOKEN
 ```
 
 ## Docker
