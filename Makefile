@@ -114,7 +114,6 @@ dashboard-token:
 dashboard-ui:
 		@sh scripts/dashboard-ui.sh
 
-
 .PHONY: vault-ui 
 vault-ui:
 		@kubectl port-forward vault-0 8200:8200
