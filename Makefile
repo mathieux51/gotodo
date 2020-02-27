@@ -30,11 +30,17 @@ APP_VERSION = 0.0.1
 # IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(DOCKER_REPOSITORY):$(DOCKER_IMAGE_VERSION)
 IMAGE_NAME=$(DOCKER_REGISTRY)/$(DOCKER_ID)/$(DOCKER_REPOSITORY):latest
 
+# Setup
+
+.PHONY: vault-login 
+vault-login: 
+		@sh scripts/vault-login.sh
+
+# Go
 .PHONY: clean
 clean: 
 		rm -rf main temp
 
-# Go
 .PHONY: coverage
 coverage:
 		mkdir -p temp; \
@@ -100,9 +106,9 @@ helm-install:
 del:
 		helm del --purge $(RELEASE_NAME) 
 
-.PHONY: token
-token:
-		@sh scripts/token.sh
+.PHONY: dashboah-token 
+dashboard-token:
+		@sh scripts/dashboard-token.sh
 
 .PHONY: dashboard
 dashboard:
