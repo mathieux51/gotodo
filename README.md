@@ -56,6 +56,7 @@ This command will ask for loging, bump the version, build the new docker image a
 
 # WIP
 
+## Done 
 - [x] v2 with [redis](https://godoc.org/github.com/gomodule/redigo/redis)
 - [x] [`docker-compose` vs `Kompose`](https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/#install-kompose)
 - [x] Create docker image
@@ -87,29 +88,41 @@ kubectl create secret generic regcred \ --from-file=.dockerconfigjson=<path/to/.
 - [x] Connect to `gcp-cluster` by edit `~/.kube/config` file
 - [x] Setup k8s loadbalancer in helm chart and run `curl localhost:3001/todos`
 - [x] Run pod `kubectl exec -it gotodo-b6487675f-xtg2q /bin/sh` with `command: ["/bin/sh"]`, `tty: true` and `stdin: true`
-- [ ] Is `Chart.yaml` required?
+- [x] Is `Chart.yaml` required?
 - [x] Add Jenkins and/or [CircleCI](https://circleci.com/pricing/#build-linux)
-- [ ] Fix CHART_NAME
-- [ ] Inject gcp variables into CircleCi
-- [ ] Deploy on GCP
+- [x] Fix CHART_NAME
+- [x] Inject gcp variables into CircleCi
+- [x] Deploy on GCP
 - [x] Run all tests (including the one with Redis) on CircleCI for a specific branch
 - [x] Replace NodePort by LoadBalancer
-- [ ] Finish the two courses on Pluralsight
-- [ ] Deploy manually gotodo with helm
-- [ ] In CircleCI dev branch should be deploy if tests pass, deploy to master should need a manuel approval
-- [ ] Read more about Ingress
+- [x] Finish the two courses on Pluralsight
+- [x] Deploy manually gotodo with helm
+- [x] Read more about Ingress
+- [x] Add tests
+- [x] Write some doc about it
+- [x] Find equivalent to package.json/requirements.txt for go
+- [x] Check auth
+
+## To do
+
+### General
+
+- [ ] Update memory profile commands
+- [ ] Organise backend, frontend code and devops code
+
+### Backend
+
+- [ ] session in Redis
+
+### Frontend
+
+- [ ] Add simple gotodo frontend
+- [ ] Update frontend with [tailwindcss](https://tailwindcss.com/docs/controlling-file-size/#app)
+
+### DevOps
+
 - [ ] Replace LoadBalancer with Ingress
 - [ ] Debug go code inside docker container
-- [x] Add tests
-- [ ] Write some doc about it
-- [ ] Find equivalent to package.json/requirements.txt for go
-- [ ] Check auth
-- [ ] Oauth with google
-- [ ] session in Redis
-- [ ] Update memory profile commands
-- [ ] Add simple gotodo frontend
-- [ ] Organise backend, frontend code and devops code
-- [ ] Update frontend with [tailwindcss](https://tailwindcss.com/docs/controlling-file-size/#app)
 
 ## Coverage report
 
