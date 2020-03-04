@@ -5,7 +5,7 @@ set -o nounset
 
 # Install dependencies
 sudo apt update
-sudo apt install vim-gtk vimcurl git -y
+sudo apt install vim-gtk vim curl git -y
 
 # vim
 curl https://raw.githubusercontent.com/mathieux51/vimrc/master/.vimrc > .vimrc
